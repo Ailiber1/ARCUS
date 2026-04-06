@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARCUS — Bridging Business to the Future</title>
+  <meta name="description" content="ARCUSは中小企業に特化したDX支援・システム開発・IT運用サポートを提供するテクノロジーパートナーです。">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-enter">
+
+  <!-- ========== Header ========== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="site-header__logo">ARCUS</a>
+      <nav class="site-header__nav">
+        <a href="#service">Service</a>
+        <a href="#about">About</a>
+        <a href="#news">News</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a href="#contact" class="site-header__cta">Contact</a>
+      <button class="hamburger" aria-label="メニューを開く">
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Nav Overlay -->
+  <nav class="mobile-nav">
+    <a href="#service">Service</a>
+    <a href="#about">About</a>
+    <a href="#news">News</a>
+    <a href="#contact" class="mobile-nav__cta">Contact</a>
+  </nav>
+
+  <!-- ========== Hero ========== -->
+  <section class="hero">
+    <div class="hero__bg">
+      <img src="images/hero.jpg" alt="" width="1920" height="1080" loading="eager">
+      <div class="hero__overlay"></div>
+    </div>
+
+    <!-- Arch SVG -->
+    <svg class="hero__arch" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="archGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#2563eb"/>
+          <stop offset="100%" stop-color="#60a5fa"/>
+        </linearGradient>
+      </defs>
+      <path d="M50 500 L50 200 Q50 50 200 50 Q350 50 350 200 L350 500" stroke="url(#archGrad)" stroke-width="3" fill="none"/>
+      <path d="M100 500 L100 220 Q100 100 200 100 Q300 100 300 220 L300 500" stroke="url(#archGrad)" stroke-width="2" fill="none" opacity="0.5"/>
+    </svg>
+
+    <div class="container hero__content">
+      <h1 class="hero__copy fade-up">Bridging<br>Business<br>to the Future.</h1>
+      <p class="hero__sub fade-up">テクノロジーで、働く人を自由にする。</p>
+    </div>
+
+    <div class="hero__scroll">
+      <span>Scroll</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ========== Numbers ========== -->
+  <section class="numbers" id="numbers">
+    <div class="container">
+      <div class="section-title fade-up">
+        <span class="section-title__en">Numbers</span>
+        <span class="section-title__ja">数字で見るARCUS</span>
+      </div>
+      <div class="numbers__grid">
+        <div class="numbers__item fade-up">
+          <div class="numbers__value">
+            <span data-count="180" data-suffix="+">0</span>
+          </div>
+          <div class="numbers__label">支援企業数</div>
+        </div>
+        <div class="numbers__item fade-up">
+          <div class="numbers__value">
+            <span data-count="98.5" data-suffix="%">0</span>
+          </div>
+          <div class="numbers__label">顧客継続率</div>
+        </div>
+        <div class="numbers__item fade-up">
+          <div class="numbers__value">
+            <span data-count="35" data-suffix="%">0</span>
+          </div>
+          <div class="numbers__label">平均コスト削減率</div>
+        </div>
+        <div class="numbers__item fade-up">
+          <div class="numbers__value">
+            <span data-count="92" data-suffix="%">0</span>
+          </div>
+          <div class="numbers__label">導入満足度</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Service ========== -->
+  <section class="service" id="service">
+    <div class="container">
+      <div class="section-title fade-up">
+        <span class="section-title__en">Service</span>
+        <span class="section-title__ja">事業内容</span>
+      </div>
+      <div class="service__list">
+
+        <!-- Service 01 -->
+        <div class="service__item fade-up">
+          <div class="service__image">
+            <img src="images/service-dx.jpg" alt="DXコンサルティングのイメージ" width="600" height="450" loading="lazy">
+          </div>
+          <div class="service__body">
+            <div class="service__number">01</div>
+            <h3 class="service__name">DX Consulting</h3>
+            <p class="service__desc">業務フローの可視化から最適なデジタルツールの選定・導入まで、御社の規模に合ったDX戦略を設計します。</p>
+            <a href="#" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+
+        <!-- Service 02 -->
+        <div class="service__item fade-up">
+          <div class="service__image">
+            <img src="images/service-dev.jpg" alt="システム開発のイメージ" width="600" height="450" loading="lazy">
+          </div>
+          <div class="service__body">
+            <div class="service__number">02</div>
+            <h3 class="service__name">System Development</h3>
+            <p class="service__desc">業務システム、Webアプリケーション、API連携まで。使い続けられるシステムを、適正な価格で。</p>
+            <a href="#" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+
+        <!-- Service 03 -->
+        <div class="service__item fade-up">
+          <div class="service__image">
+            <img src="images/service-support.jpg" alt="IT運用サポートのイメージ" width="600" height="450" loading="lazy">
+          </div>
+          <div class="service__body">
+            <div class="service__number">03</div>
+            <h3 class="service__name">IT Support</h3>
+            <p class="service__desc">専任の情シス担当がいなくても安心。月額固定でヘルプデスクからインフラ管理まで対応します。</p>
+            <a href="#" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Why ARCUS ========== -->
+  <section class="why" id="about">
+    <div class="container">
+      <div class="section-title fade-up">
+        <span class="section-title__en">Why ARCUS</span>
+        <span class="section-title__ja">選ばれる理由</span>
+      </div>
+      <div class="why__grid">
+
+        <div class="why__card fade-up">
+          <div class="why__card-number">01</div>
+          <div class="why__card-icon">
+            <i data-lucide="target" width="40" height="40"></i>
+          </div>
+          <h3 class="why__card-title">中小企業専門</h3>
+          <p class="why__card-desc">御社の規模に合った最適解を。大企業向けの過剰な提案はしません。</p>
+        </div>
+
+        <div class="why__card fade-up">
+          <div class="why__card-number">02</div>
+          <div class="why__card-icon">
+            <i data-lucide="handshake" width="40" height="40"></i>
+          </div>
+          <h3 class="why__card-title">伴走型支援</h3>
+          <p class="why__card-desc">導入して終わりではない。定着するまで並走します。</p>
+        </div>
+
+        <div class="why__card fade-up">
+          <div class="why__card-number">03</div>
+          <div class="why__card-icon">
+            <i data-lucide="file-check" width="40" height="40"></i>
+          </div>
+          <h3 class="why__card-title">透明な料金</h3>
+          <p class="why__card-desc">見積もりの内訳をすべて公開。追加費用なし。</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== News ========== -->
+  <section class="news" id="news">
+    <div class="container">
+      <div class="section-title fade-up">
+        <span class="section-title__en">News</span>
+        <span class="section-title__ja">お知らせ</span>
+      </div>
+      <div class="news__list fade-up">
+
+        <a href="#" class="news__item">
+          <div class="news__meta">
+            <span class="news__date">2025.04.01</span>
+            <span class="news__tag news__tag--notice">Notice</span>
+          </div>
+          <span class="news__title">ゴールデンウィーク休業のお知らせ（4/29〜5/6）</span>
+        </a>
+
+        <a href="#" class="news__item">
+          <div class="news__meta">
+            <span class="news__date">2025.03.15</span>
+            <span class="news__tag news__tag--achievement">Achievement</span>
+          </div>
+          <span class="news__title">支援企業数が180社を突破しました</span>
+        </a>
+
+        <a href="#" class="news__item">
+          <div class="news__meta">
+            <span class="news__date">2025.02.20</span>
+            <span class="news__tag news__tag--media">Media</span>
+          </div>
+          <span class="news__title">日経クロステックに当社の取り組みが掲載されました</span>
+        </a>
+
+      </div>
+      <a href="news.html" class="news__more fade-up">View All <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </section>
+
+  <!-- ========== Contact CTA ========== -->
+  <section class="contact-cta" id="contact">
+    <div class="contact-cta__bg">
+      <img src="images/contact-cta.png" alt="" width="1920" height="800" loading="lazy">
+      <div class="contact-cta__overlay"></div>
+    </div>
+    <div class="container contact-cta__content fade-up">
+      <h2 class="contact-cta__heading">まずは、お話しませんか。</h2>
+      <p class="contact-cta__sub">Free consultation available</p>
+      <a href="contact.html" class="contact-cta__btn">Contact Us <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </section>
+
+  <!-- ========== Footer ========== -->
+  <footer class="site-footer">
+    <!-- Arch motif -->
+    <svg class="site-footer__arch" viewBox="0 0 160 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M10 80 L10 40 Q10 10 80 10 Q150 10 150 40 L150 80" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+    </svg>
+
+    <div class="site-footer__inner">
+      <div class="container">
+        <div class="site-footer__grid">
+
+          <!-- Brand -->
+          <div>
+            <div class="site-footer__brand">ARCUS</div>
+            <p class="site-footer__tagline">テクノロジーで、働く人を自由にする。<br>中小企業のデジタル変革を支える、あなたのITパートナー。</p>
+          </div>
+
+          <!-- Navigation -->
+          <div>
+            <div class="site-footer__heading">Navigation</div>
+            <div class="site-footer__links">
+              <a href="#service">Service</a>
+              <a href="#about">About</a>
+              <a href="#news">News</a>
+              <a href="#contact">Contact</a>
+            </div>
+          </div>
+
+          <!-- Contact -->
+          <div>
+            <div class="site-footer__heading">Contact</div>
+            <div class="site-footer__contact-info">
+              <p>info@arcus-corp.jp</p>
+              <p>03-0000-0000</p>
+              <p>東京都渋谷区神宮前1-1-1</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="site-footer__bottom">
+          <span class="site-footer__copy">&copy; 2025 ARCUS Inc. All rights reserved.</span>
+          <button class="site-footer__policy" data-modal-open>Privacy Policy</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== Privacy Policy Modal ========== -->
+  <div class="modal-overlay">
+    <div class="modal" role="dialog" aria-labelledby="modal-title">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modal-title">Privacy Policy</h2>
+        <button class="modal__close" data-modal-close aria-label="閉じる">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal__body">
+        <h3>個人情報の取り扱いについて</h3>
+        <p>ARCUS株式会社（以下「当社」）は、お客様の個人情報の保護を重要な責務と認識し、以下の方針に基づき適切に管理いたします。</p>
+
+        <h3>1. 取得する情報</h3>
+        <p>お問い合わせフォーム等を通じて、氏名、メールアドレス、電話番号、会社名等の情報を取得する場合があります。</p>
+
+        <h3>2. 利用目的</h3>
+        <p>取得した個人情報は、お問い合わせへの回答、サービスのご案内、業務遂行に必要な連絡のためにのみ利用いたします。</p>
+
+        <h3>3. 第三者提供</h3>
+        <p>法令に基づく場合を除き、お客様の同意なく個人情報を第三者に提供することはありません。</p>
+
+        <h3>4. お問い合わせ</h3>
+        <p>個人情報に関するお問い合わせは、info@arcus-corp.jp までご連絡ください。</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
