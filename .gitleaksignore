@@ -1,3 +1,2 @@
-# Firebase client API key (public, protected by security rules)
-/private/tmp/ARCUS/js/main.js:gcp-api-key:12
-js/main.js:gcp-api-key:12
+# Supabase anon key (public, protected by RLS)
+js/main.js:jwt:10

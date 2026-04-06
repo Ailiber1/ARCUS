@@ -5,16 +5,9 @@
 (function () {
   'use strict';
 
-  /* ---- Firebase Init ---- */
-  var db = null;
-  if (window.firebase) {
-    firebase.initializeApp({
-      apiKey: 'AIzaSyDEru4I6Q_AYA4Rwi863fOBJLVzpoeg4e0',
-      databaseURL: 'https://arcus-corporate-default-rtdb.firebaseio.com',
-      projectId: 'arcus-corporate'
-    });
-    db = firebase.database();
-  }
+  /* ---- Supabase REST API ---- */
+  var SUPABASE_URL = 'https://pcsggtyuwfhqbmjczraq.supabase.co';
+  var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjc2dndHl1d2ZocWJtamN6cmFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMzIwMDQsImV4cCI6MjA5MDcwODAwNH0._q1xfP1jMRXj2amFld47UpSCnM-Zl0sqeSJ6UF_79EY';
 
   /* ---- Page load fade-in ---- */
   window.addEventListener('DOMContentLoaded', function () {
@@ -193,20 +186,19 @@
   });
 
   /* ============================================
-     Firebase: Top Page News (3件)
+     Supabase: Top Page News (3件)
      ============================================ */
   function loadTopNews() {
     var newsList = document.getElementById('news-list');
-    if (!newsList || !db) return;
+    if (!newsList) return;
 
-    var ref = db.ref('news').orderByChild('order').limitToLast(3);
-    ref.once('value').then(function (snapshot) {
-      var items = [];
-      snapshot.forEach(function (child) {
-        items.push(child.val());
-      });
-      items.reverse();
-
+    var url = SUPABASE_URL + '/rest/v1/arcus_news?select=date,category,title&order=sort_order.desc&is_published=eq.true&limit=3';
+    fetch(url, {
+      headers: { 'apikey': SUPABASE_ANON_KEY }
+    }).then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    }).then(function (items) {
       var html = '';
       items.forEach(function (item) {
         var tagClass = 'news__tag--' + (item.category || 'notice').toLowerCase();
@@ -220,7 +212,6 @@
           + '<span class="news__title">' + escapeHtml(item.title || '') + '</span>'
           + '</a>';
       });
-
       newsList.innerHTML = html;
     }).catch(function (err) {
       console.error('News load error:', err);
@@ -228,22 +219,22 @@
   }
 
   /* ============================================
-     Firebase: News Page (全件 + フィルター)
+     Supabase: News Page (全件 + フィルター)
      ============================================ */
   var allNewsData = [];
 
   function loadNewsPage() {
     var newsPageList = document.getElementById('news-page-list');
-    if (!newsPageList || !db) return;
+    if (!newsPageList) return;
 
-    var ref = db.ref('news').orderByChild('order');
-    ref.once('value').then(function (snapshot) {
-      allNewsData = [];
-      snapshot.forEach(function (child) {
-        allNewsData.push(child.val());
-      });
-      allNewsData.reverse();
-
+    var url = SUPABASE_URL + '/rest/v1/arcus_news?select=date,category,title,content&order=sort_order.desc&is_published=eq.true';
+    fetch(url, {
+      headers: { 'apikey': SUPABASE_ANON_KEY }
+    }).then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    }).then(function (items) {
+      allNewsData = items;
       renderNewsList(allNewsData);
       initNewsFilter();
     }).catch(function (err) {
@@ -271,7 +262,7 @@
         + '<span class="news-accordion__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>'
         + '</button>'
         + '<div class="news-accordion__body">'
-        + '<div class="news-accordion__content">' + escapeHtml(item.detail || item.title || '') + '</div>'
+        + '<div class="news-accordion__content">' + escapeHtml(item.content || item.title || '') + '</div>'
         + '</div>'
         + '</div>';
     });
@@ -327,11 +318,11 @@
   }
 
   /* ============================================
-     Contact Form → Firebase
+     Contact Form → Supabase
      ============================================ */
   function initContactForm() {
     var form = document.getElementById('contact-form');
-    if (!form || !db) return;
+    if (!form) return;
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -380,18 +371,26 @@
       submitBtn.disabled = true;
       submitBtn.textContent = '送信中...';
 
-      /* Push to Firebase */
+      /* POST to Supabase */
       var contactData = {
         company: company,
         name: name,
         email: email,
         phone: phone,
-        inquiryType: inquiryType,
-        message: message,
-        timestamp: new Date().toISOString()
+        inquiry_type: inquiryType,
+        message: message
       };
 
-      db.ref('contacts').push(contactData).then(function () {
+      fetch(SUPABASE_URL + '/rest/v1/arcus_contacts', {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(contactData)
+      }).then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
         /* Show thank you */
         form.style.display = 'none';
         var thanks = document.getElementById('contact-thanks');
