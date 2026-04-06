@@ -24,12 +24,12 @@
     <div class="container">
       <a href="/" class="site-header__logo">ARCUS</a>
       <nav class="site-header__nav">
-        <a href="#service">Service</a>
-        <a href="#about">About</a>
-        <a href="#news">News</a>
-        <a href="#contact">Contact</a>
+        <a href="services.html">Service</a>
+        <a href="about.html">About</a>
+        <a href="news.html">News</a>
+        <a href="contact.html">Contact</a>
       </nav>
-      <a href="#contact" class="site-header__cta">Contact</a>
+      <a href="contact.html" class="site-header__cta">Contact</a>
       <button class="hamburger" aria-label="メニューを開く">
         <span class="hamburger__line"></span>
         <span class="hamburger__line"></span>
@@ -40,10 +40,10 @@
 
   <!-- Mobile Nav Overlay -->
   <nav class="mobile-nav">
-    <a href="#service">Service</a>
-    <a href="#about">About</a>
-    <a href="#news">News</a>
-    <a href="#contact" class="mobile-nav__cta">Contact</a>
+    <a href="services.html">Service</a>
+    <a href="about.html">About</a>
+    <a href="news.html">News</a>
+    <a href="contact.html" class="mobile-nav__cta">Contact</a>
   </nav>
 
   <!-- ========== Hero ========== -->
@@ -130,7 +130,7 @@
             <div class="service__number">01</div>
             <h3 class="service__name">DX Consulting</h3>
             <p class="service__desc">業務フローの可視化から最適なデジタルツールの選定・導入まで、御社の規模に合ったDX戦略を設計します。</p>
-            <a href="#" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
+            <a href="services.html#dx-strategy" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
           </div>
         </div>
 
@@ -143,7 +143,7 @@
             <div class="service__number">02</div>
             <h3 class="service__name">System Development</h3>
             <p class="service__desc">業務システム、Webアプリケーション、API連携まで。使い続けられるシステムを、適正な価格で。</p>
-            <a href="#" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
+            <a href="services.html#development" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
           </div>
         </div>
 
@@ -156,7 +156,7 @@
             <div class="service__number">03</div>
             <h3 class="service__name">IT Support</h3>
             <p class="service__desc">専任の情シス担当がいなくても安心。月額固定でヘルプデスクからインフラ管理まで対応します。</p>
-            <a href="#" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
+            <a href="services.html#it-advisory" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
           </div>
         </div>
 
@@ -211,32 +211,8 @@
         <span class="section-title__en">News</span>
         <span class="section-title__ja">お知らせ</span>
       </div>
-      <div class="news__list fade-up">
-
-        <a href="#" class="news__item">
-          <div class="news__meta">
-            <span class="news__date">2025.04.01</span>
-            <span class="news__tag news__tag--notice">Notice</span>
-          </div>
-          <span class="news__title">ゴールデンウィーク休業のお知らせ（4/29〜5/6）</span>
-        </a>
-
-        <a href="#" class="news__item">
-          <div class="news__meta">
-            <span class="news__date">2025.03.15</span>
-            <span class="news__tag news__tag--achievement">Achievement</span>
-          </div>
-          <span class="news__title">支援企業数が180社を突破しました</span>
-        </a>
-
-        <a href="#" class="news__item">
-          <div class="news__meta">
-            <span class="news__date">2025.02.20</span>
-            <span class="news__tag news__tag--media">Media</span>
-          </div>
-          <span class="news__title">日経クロステックに当社の取り組みが掲載されました</span>
-        </a>
-
+      <div class="news__list fade-up" id="news-list">
+        <!-- Firebase Realtime DBから動的に読み込み -->
       </div>
       <a href="news.html" class="news__more fade-up">View All <span aria-hidden="true">&rarr;</span></a>
     </div>
@@ -276,10 +252,10 @@
           <div>
             <div class="site-footer__heading">Navigation</div>
             <div class="site-footer__links">
-              <a href="#service">Service</a>
-              <a href="#about">About</a>
-              <a href="#news">News</a>
-              <a href="#contact">Contact</a>
+              <a href="services.html">Service</a>
+              <a href="about.html">About</a>
+              <a href="news.html">News</a>
+              <a href="contact.html">Contact</a>
             </div>
           </div>
 
@@ -331,6 +307,8 @@
     </div>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
