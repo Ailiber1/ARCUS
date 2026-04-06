@@ -1,2 +1,5 @@
 # Supabase anon key (public, protected by RLS)
 js/main.js:jwt:10
+
+# Firebase client API key (old commit, no longer used — client keys are public-safe)
+811994b618f27ac6b53f92c70eada1d12f512afc:js/main.js:gcp-api-key:12
