@@ -2249,7 +2249,7 @@ body {
 
 .message__body p {
   font-size: 15px;
-  color: var(--color-text-sub);
+  color: var(--color-text);
   line-height: 2.0;
   margin-bottom: 20px;
 }
