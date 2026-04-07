@@ -635,10 +635,11 @@ button {
    ============================================ */
 .marquee {
   overflow: hidden;
-  border-top: 1px solid var(--color-border);
-  border-bottom: 1px solid var(--color-border);
-  padding: 16px 0;
-  background: var(--color-bg);
+  border-top: 1px solid #dbeafe;
+  border-bottom: 1px solid #dbeafe;
+  padding: 20px 0;
+  background: linear-gradient(90deg, var(--color-bg) 0%, #f0f9ff 50%, var(--color-bg) 100%);
+  position: relative;
 }
 
 .marquee__track {
@@ -654,7 +655,7 @@ button {
 
 .marquee__text {
   font-family: var(--font-heading);
-  font-size: clamp(14px, 2vw, 20px);
+  font-size: clamp(16px, 2.5vw, 24px);
   font-weight: 500;
   letter-spacing: 0.2em;
   color: var(--color-text-sub);
@@ -675,10 +676,12 @@ button {
    Numbers — Giant numbers with arch SVG
    ============================================ */
 .numbers {
-  background: var(--color-bg-alt);
+  background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%);
   padding: var(--space-section) 0;
   position: relative;
   overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%);
+  padding-bottom: calc(var(--space-section) + 40px);
 }
 
 /* Subtle arch SVG pattern behind numbers */
@@ -721,6 +724,14 @@ button {
   color: var(--color-primary);
   line-height: 1;
   letter-spacing: -0.03em;
+  transform: scale(0.5);
+  filter: blur(4px);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.numbers__value.is-visible {
+  transform: scale(1);
+  filter: blur(0);
 }
 
 /* Bounce animation class added via JS */
@@ -755,6 +766,8 @@ button {
 .service-sticky {
   padding: var(--space-section) 0;
   background: var(--color-bg);
+  background-image: radial-gradient(circle, rgba(37, 99, 235, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
 .service-sticky__inner {
@@ -803,10 +816,19 @@ button {
   border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 40px;
-  transition: transform var(--transition), box-shadow var(--transition);
+  transition: transform var(--transition), box-shadow var(--transition), opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  transform: translateX(60px);
+  filter: blur(4px);
 }
 
-.service-sticky__card:hover {
+.service-sticky__card.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+  filter: blur(0);
+}
+
+.service-sticky__card.is-visible:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-hover);
 }
@@ -815,10 +837,14 @@ button {
   font-family: var(--font-heading);
   font-size: clamp(64px, 10vw, 120px);
   font-weight: 700;
-  color: var(--color-border);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   line-height: 1;
   letter-spacing: -0.04em;
   margin-bottom: 16px;
+  opacity: 0.15;
 }
 
 .service-sticky__img {
@@ -886,7 +912,7 @@ button {
    Why ARCUS — Horizontal scroll (desktop)
    ============================================ */
 .why-hscroll {
-  background: var(--color-bg-alt);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 30%, #f0f9ff 70%, #ffffff 100%);
   position: relative;
 }
 
@@ -1055,7 +1081,7 @@ button {
    ============================================ */
 .news {
   padding: var(--space-section) 0;
-  background: var(--color-bg);
+  background: repeating-linear-gradient(-45deg, transparent, transparent 60px, rgba(37, 99, 235, 0.015) 60px, rgba(37, 99, 235, 0.015) 62px), var(--color-bg);
 }
 
 .news__list {
@@ -1071,8 +1097,15 @@ button {
   padding: 24px 0;
   padding-left: 0;
   border-bottom: 1px dashed var(--color-border);
-  transition: padding-left var(--transition);
+  transition: padding-left var(--transition), opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.news__item.is-visible {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* Accent bar on hover */
@@ -1558,6 +1591,48 @@ button {
 
 .modal__body p {
   margin-bottom: 12px;
+}
+
+/* ============================================
+   Scroll Experience — Background color transition
+   ============================================ */
+body {
+  --scroll-bg: #ffffff;
+  background: var(--scroll-bg);
+  transition: background 0.6s ease;
+}
+
+/* ============================================
+   Scroll Experience — Scroll Snap (desktop only)
+   ============================================ */
+@media (min-width: 1024px) {
+  html.scroll-snap-active {
+    scroll-snap-type: y proximity;
+  }
+
+  .scroll-snap-active .hero,
+  .scroll-snap-active .numbers,
+  .scroll-snap-active .service-sticky,
+  .scroll-snap-active .why-hscroll,
+  .scroll-snap-active .news,
+  .scroll-snap-active .contact-cta {
+    scroll-snap-align: start;
+  }
+}
+
+/* ============================================
+   Scroll Experience — Section title scroll fade
+   ============================================ */
+.section-title[data-scroll-fade] {
+  will-change: transform, opacity;
+}
+
+/* ============================================
+   Scroll Experience — Service card parallax inner elements
+   ============================================ */
+.service-sticky__number,
+.service-sticky__img {
+  will-change: transform;
 }
 
 /* ============================================
@@ -2923,4 +2998,28 @@ button {
   pointer-events: none;
   line-height: 1;
   white-space: nowrap;
+}
+
+/* ============================================
+   Scroll Progress Bar
+   ============================================ */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
+  z-index: 10001;
+  pointer-events: none;
+  will-change: width;
+}
+
+/* ============================================
+   Why ARCUS — Card Connectors (desktop only)
+   ============================================ */
+@media (min-width: 1024px) {
+  .why-hscroll__card + .why-hscroll__card {
+    position: relative;
+  }
 }

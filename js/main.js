@@ -36,6 +36,11 @@
     initHeroMouseParallax();
     initImageReveal();
     initCharAnimate();
+    initScrollProgress();
+    initNumbersReveal();
+    initServiceCardReveal();
+    initNewsItemReveal();
+    initScrollExperience();
   });
 
   /* ============================================
@@ -131,56 +136,51 @@
   }
 
   /* ============================================
-     Number count-up with bounce
+     Number count-up — Scroll-linked counter
+     Numbers change based on scroll position within the section.
      ============================================ */
   var countEls = document.querySelectorAll('[data-count]');
 
-  function animateCount(el) {
+  /* Store metadata for each counter element */
+  var countData = [];
+  countEls.forEach(function (el) {
     var target = parseFloat(el.getAttribute('data-count'));
     var suffix = el.getAttribute('data-suffix') || '';
     var decimals = target % 1 !== 0 ? 1 : 0;
-    var duration = 2000;
-    var startTime = null;
-    var parentValue = el.closest('.numbers__value');
-
-    function step(timestamp) {
-      if (!startTime) startTime = timestamp;
-      var progress = Math.min((timestamp - startTime) / duration, 1);
-      /* easeOutExpo */
-      var ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-      var current = target * ease;
-
-      el.textContent = current.toFixed(decimals) + suffix;
-
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      } else {
-        /* Add bounce effect after count completes */
-        if (parentValue) {
-          parentValue.classList.add('is-bounced');
-        }
-      }
-    }
-
-    requestAnimationFrame(step);
-  }
-
-  var countObserver = new IntersectionObserver(
-    function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          animateCount(entry.target);
-          countObserver.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
-
-  countEls.forEach(function (el) {
-    el.textContent = '0';
-    countObserver.observe(el);
+    el.textContent = '0' + suffix;
+    countData.push({
+      el: el,
+      target: target,
+      suffix: suffix,
+      decimals: decimals,
+      done: false
+    });
   });
+
+  /* This function is called from the unified scroll loop */
+  function updateScrollCounters() {
+    var numbersSection = document.getElementById('numbers');
+    if (!numbersSection || !countData.length) return;
+
+    var rect = numbersSection.getBoundingClientRect();
+    var windowH = window.innerHeight;
+
+    /* progress: 0 when section top enters viewport, 1 when section top reaches 30% from top */
+    var startY = windowH;        /* section top at viewport bottom = 0% */
+    var endY = windowH * 0.3;    /* section top at 30% from top = 100% */
+    var progress = Math.max(0, Math.min(1, (startY - rect.top) / (startY - endY)));
+
+    countData.forEach(function (item) {
+      var current = item.target * progress;
+      item.el.textContent = current.toFixed(item.decimals) + item.suffix;
+
+      if (progress >= 1 && !item.done) {
+        item.done = true;
+        var parentValue = item.el.closest('.numbers__value');
+        if (parentValue) parentValue.classList.add('is-bounced');
+      }
+    });
+  }
 
   /* ============================================
      Parallax effect (sub-hero bg, contact-cta bg)
@@ -835,6 +835,278 @@
 
       charObserver.observe(target);
     });
+  }
+
+  /* ============================================
+     Scroll Progress Bar
+     ============================================ */
+  function initScrollProgress() {
+    var progressBar = document.querySelector('.scroll-progress');
+    if (!progressBar) return;
+
+    var ticking = false;
+
+    function updateProgress() {
+      var scrollTop = window.scrollY;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = progress + '%';
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        requestAnimationFrame(updateProgress);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    updateProgress();
+  }
+
+  /* ============================================
+     Numbers — Scale + Blur reveal animation
+     ============================================ */
+  function initNumbersReveal() {
+    var numberValues = document.querySelectorAll('.numbers__value');
+    if (!numberValues.length) return;
+
+    var numbersObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            numbersObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    numberValues.forEach(function (el) {
+      numbersObserver.observe(el);
+    });
+  }
+
+  /* ============================================
+     Service Cards — Slide-in from right with stagger
+     ============================================ */
+  function initServiceCardReveal() {
+    var cards = document.querySelectorAll('.service-sticky__card');
+    if (!cards.length) return;
+
+    var cardObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var idx = parseInt(entry.target.getAttribute('data-index') || '0', 10);
+            setTimeout(function () {
+              entry.target.classList.add('is-visible');
+            }, idx * 150);
+            cardObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    cards.forEach(function (card) {
+      cardObserver.observe(card);
+    });
+  }
+
+  /* ============================================
+     News Items — Stagger reveal from left
+     ============================================ */
+  function initNewsItemReveal() {
+    /* News items are dynamically loaded, so we use MutationObserver */
+    var newsList = document.getElementById('news-list');
+    if (!newsList) return;
+
+    function observeNewsItems() {
+      var items = newsList.querySelectorAll('.news__item');
+      if (!items.length) return;
+
+      var newsObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              /* Find index among siblings */
+              var siblings = Array.prototype.slice.call(entry.target.parentElement.children);
+              var idx = siblings.indexOf(entry.target);
+              setTimeout(function () {
+                entry.target.classList.add('is-visible');
+              }, idx * 100);
+              newsObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -20px 0px' }
+      );
+
+      items.forEach(function (item) {
+        newsObserver.observe(item);
+      });
+    }
+
+    /* Observe for dynamically loaded content */
+    var mutObserver = new MutationObserver(function () {
+      observeNewsItems();
+    });
+    mutObserver.observe(newsList, { childList: true });
+
+    /* Also try immediately in case items are already there */
+    observeNewsItems();
+  }
+
+  /* ============================================
+     Scroll Experience — Unified scroll loop
+     All 5 scroll-driven effects in a single rAF loop.
+     ============================================ */
+  function initScrollExperience() {
+    /* ---- 1. Background color transitions ---- */
+    var bgSections = [
+      { sel: '.hero',           color: '#ffffff' },
+      { sel: '.numbers',        color: '#f0f9ff' },
+      { sel: '.service-sticky', color: '#ffffff' },
+      { sel: '.why-hscroll',    color: '#f1f5f9' },
+      { sel: '.news',           color: '#ffffff' },
+      { sel: '.contact-cta',    color: '#dbeafe' }
+    ];
+
+    var bgSectionEls = [];
+    bgSections.forEach(function (s) {
+      var el = document.querySelector(s.sel);
+      if (el) bgSectionEls.push({ el: el, color: s.color });
+    });
+
+    function updateBgColor() {
+      var midY = window.innerHeight * 0.4;
+      var currentColor = '#ffffff';
+
+      for (var i = bgSectionEls.length - 1; i >= 0; i--) {
+        var rect = bgSectionEls[i].el.getBoundingClientRect();
+        if (rect.top <= midY) {
+          currentColor = bgSectionEls[i].color;
+          break;
+        }
+      }
+
+      document.body.style.setProperty('--scroll-bg', currentColor);
+    }
+
+    /* ---- 2. Scroll-linked counters (delegated to updateScrollCounters) ---- */
+
+    /* ---- 3. Service card parallax ---- */
+    var serviceCards = document.querySelectorAll('.service-sticky__card');
+
+    function updateServiceParallax() {
+      if (!serviceCards.length) return;
+
+      serviceCards.forEach(function (card) {
+        var rect = card.getBoundingClientRect();
+        var windowH = window.innerHeight;
+
+        /* Only process cards near viewport */
+        if (rect.bottom < -100 || rect.top > windowH + 100) return;
+
+        /* scrollDelta: distance from center of viewport */
+        var cardCenter = rect.top + rect.height / 2;
+        var viewCenter = windowH / 2;
+        var delta = cardCenter - viewCenter;
+
+        var numEl = card.querySelector('.service-sticky__number');
+        var imgEl = card.querySelector('.service-sticky__img');
+
+        if (numEl) {
+          numEl.style.transform = 'translateY(' + (delta * 0.3) + 'px)';
+        }
+        if (imgEl) {
+          imgEl.style.transform = 'translateY(' + (delta * 0.15) + 'px)';
+        }
+      });
+    }
+
+    /* ---- 4. Scroll snap (desktop only) ---- */
+    if (window.innerWidth >= 1024) {
+      document.documentElement.classList.add('scroll-snap-active');
+    }
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth >= 1024) {
+        document.documentElement.classList.add('scroll-snap-active');
+      } else {
+        document.documentElement.classList.remove('scroll-snap-active');
+      }
+    });
+
+    /* ---- 5. Section title scroll-linked fade ---- */
+    var fadeTitles = document.querySelectorAll('[data-scroll-fade]');
+
+    function updateTitleFade() {
+      if (!fadeTitles.length) return;
+
+      fadeTitles.forEach(function (title) {
+        var rect = title.getBoundingClientRect();
+        var windowH = window.innerHeight;
+
+        /* Entering zone: bottom 30% of viewport */
+        var enterStart = windowH;
+        var enterEnd = windowH * 0.6;
+
+        /* Exiting zone: top 20% of viewport */
+        var exitStart = windowH * 0.2;
+        var exitEnd = -rect.height;
+
+        var centerY = rect.top + rect.height / 2;
+        var opacity = 1;
+        var translateY = 0;
+
+        if (centerY > enterStart) {
+          /* Below viewport — hidden */
+          opacity = 0;
+          translateY = 30;
+        } else if (centerY > enterEnd) {
+          /* Entering — fade in */
+          var enterProgress = 1 - (centerY - enterEnd) / (enterStart - enterEnd);
+          opacity = enterProgress;
+          translateY = 30 * (1 - enterProgress);
+        } else if (centerY < exitEnd) {
+          /* Above viewport — hidden */
+          opacity = 0;
+          translateY = -30;
+        } else if (centerY < exitStart) {
+          /* Exiting — fade out */
+          var exitProgress = (centerY - exitEnd) / (exitStart - exitEnd);
+          opacity = exitProgress;
+          translateY = -30 * (1 - exitProgress);
+        }
+
+        title.style.opacity = opacity;
+        title.style.transform = 'translateY(' + translateY + 'px)';
+      });
+    }
+
+    /* ---- Unified scroll handler ---- */
+    var scrollTicking = false;
+
+    function onScrollExperience() {
+      updateBgColor();
+      updateScrollCounters();
+      updateServiceParallax();
+      updateTitleFade();
+      scrollTicking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!scrollTicking) {
+        requestAnimationFrame(onScrollExperience);
+        scrollTicking = true;
+      }
+    }, { passive: true });
+
+    /* Initial call */
+    onScrollExperience();
   }
 
 })();
