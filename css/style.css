@@ -1035,31 +1035,31 @@ button {
    ============================================ */
 .contact-cta {
   position: relative;
-  padding: 200px 0;
+  padding: 120px 0;
   overflow: hidden;
-  min-height: 500px;
+  background: var(--color-bg-alt);
 }
 
 .contact-cta__bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-  will-change: transform;
 }
 
 .contact-cta__bg img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center center;
+  object-position: center 70%;
 }
 
 .contact-cta__overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.6) 0%,
+    to bottom,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.35) 50%,
     rgba(248, 250, 252, 0.5) 100%
   );
 }
