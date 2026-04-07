@@ -31,6 +31,10 @@
     initParallax();
     initMagneticButtons();
     initHorizontalScroll();
+    initHeroScrollScaling();
+    initHeroMouseParallax();
+    initImageReveal();
+    initCharAnimate();
   });
 
   /* ============================================
@@ -639,6 +643,167 @@
 
   function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  /* ============================================
+     Motion 1: Hero Scroll Scaling
+     ARCUS text scales up and fades out on scroll
+     ============================================ */
+  function initHeroScrollScaling() {
+    var heroTitle = document.querySelector('.hero__mask-title');
+    var heroSection = document.querySelector('.hero');
+    if (!heroTitle || !heroSection) return;
+
+    var ticking = false;
+
+    function updateHeroScale() {
+      var rect = heroSection.getBoundingClientRect();
+      var windowH = window.innerHeight;
+      /* Progress from 0 (top) to 1 (scrolled past 100vh) */
+      var scrolled = -rect.top;
+      var progress = Math.max(0, Math.min(1, scrolled / windowH));
+
+      /* Scale from 1 to 1.5, opacity from 1 to 0 */
+      var scale = 1 + progress * 0.5;
+      var opacity = 1 - progress;
+
+      heroTitle.style.transform = 'scale(' + scale + ')';
+      heroTitle.style.opacity = opacity;
+
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        requestAnimationFrame(updateHeroScale);
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
+  /* ============================================
+     Motion 2: Hero Mouse Parallax (desktop only)
+     Background image shifts with mouse position
+     ============================================ */
+  function initHeroMouseParallax() {
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+
+    var heroTitle = document.querySelector('.hero__mask-title');
+    if (!heroTitle) return;
+
+    var targetX = 0;
+    var targetY = 0;
+    var currentX = 0;
+    var currentY = 0;
+    var maxOffset = 20; /* px */
+    var running = false;
+
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    function animate() {
+      currentX = lerp(currentX, targetX, 0.08);
+      currentY = lerp(currentY, targetY, 0.08);
+
+      var bgX = 'calc(50% + ' + currentX + 'px)';
+      var bgY = 'calc(50% + ' + currentY + 'px)';
+      heroTitle.style.backgroundPosition = bgX + ' ' + bgY;
+
+      if (Math.abs(currentX - targetX) > 0.1 || Math.abs(currentY - targetY) > 0.1) {
+        requestAnimationFrame(animate);
+      } else {
+        running = false;
+      }
+    }
+
+    document.addEventListener('mousemove', function (e) {
+      var w = window.innerWidth;
+      var h = window.innerHeight;
+      /* Normalize to -1..1 */
+      var nx = (e.clientX / w - 0.5) * 2;
+      var ny = (e.clientY / h - 0.5) * 2;
+
+      targetX = nx * maxOffset;
+      targetY = ny * maxOffset;
+
+      if (!running) {
+        running = true;
+        requestAnimationFrame(animate);
+      }
+    }, { passive: true });
+  }
+
+  /* ============================================
+     Motion 3: Image Reveal (Curtain Effect)
+     Service images reveal with sliding overlay
+     ============================================ */
+  function initImageReveal() {
+    var revealEls = document.querySelectorAll('.img-reveal');
+    if (!revealEls.length) return;
+
+    var revealObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    revealEls.forEach(function (el) {
+      revealObserver.observe(el);
+    });
+  }
+
+  /* ============================================
+     Motion 4: Character-by-character Animation
+     Splits text into spans and animates in
+     ============================================ */
+  function initCharAnimate() {
+    var targets = document.querySelectorAll('[data-char-animate]');
+    if (!targets.length) return;
+
+    targets.forEach(function (target) {
+      /* Find the inner span with the text */
+      var innerSpan = target.querySelector('.reveal-line__inner');
+      var textSource = innerSpan || target;
+      var text = textSource.textContent;
+      var html = '';
+
+      for (var i = 0; i < text.length; i++) {
+        var c = text[i];
+        if (c === ' ') {
+          html += '<span class="char" style="width:0.3em">&nbsp;</span>';
+        } else {
+          html += '<span class="char">' + c + '</span>';
+        }
+      }
+
+      textSource.innerHTML = html;
+
+      var charObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              var chars = entry.target.querySelectorAll('.char');
+              chars.forEach(function (ch, idx) {
+                setTimeout(function () {
+                  ch.classList.add('is-visible');
+                }, 30 * idx);
+              });
+              charObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
+
+      charObserver.observe(target);
+    });
   }
 
 })();
