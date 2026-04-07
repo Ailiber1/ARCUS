@@ -31,6 +31,7 @@
     initParallax();
     initMagneticButtons();
     initHorizontalScroll();
+    initHeroTitleAnimation();
     initHeroScrollScaling();
     initHeroMouseParallax();
     initImageReveal();
@@ -646,11 +647,41 @@
   }
 
   /* ============================================
+     Hero Title Cinematic Animation
+     Phase 2: 1文字ずつ出現 → Phase 3: テキストマスク切り替え
+     ============================================ */
+  function initHeroTitleAnimation() {
+    var chars = document.querySelectorAll('.hero-char');
+    if (!chars.length) return;
+
+    var title = document.getElementById('hero-title');
+
+    /* Phase 2: 文字を出現させる（CSS transition-delay で各文字がずれて出現） */
+    requestAnimationFrame(function () {
+      chars.forEach(function (c) { c.classList.add('is-visible'); });
+    });
+
+    /* Phase 3: 全文字出現後にテキストマスクをワイプで切り替え
+       最後の文字の delay = 4 * 0.12 + 0.5 = 0.98s、transition duration = 0.7s
+       → 最後の文字完了 = 約1.68s、+ 0.3s待機 = 約2.0s */
+    var lastCharDelay = (chars.length - 1) * 0.12 + 0.5;
+    var totalCharTime = lastCharDelay + 0.7;
+    setTimeout(function () {
+      if (title) {
+        /* span構造を解除してプレーンテキストに戻す（background-clip:textを正しく効かせるため） */
+        title.textContent = 'ARCUS';
+        title.classList.add('is-masked');
+        title.classList.add('is-mask-animating');
+      }
+    }, (totalCharTime + 0.3) * 1000);
+  }
+
+  /* ============================================
      Motion 1: Hero Scroll Scaling
      ARCUS text scales up and fades out on scroll
      ============================================ */
   function initHeroScrollScaling() {
-    var heroTitle = document.querySelector('.hero__mask-title');
+    var heroTitle = document.querySelector('.hero__mask-text');
     var heroSection = document.querySelector('.hero');
     if (!heroTitle || !heroSection) return;
 
@@ -688,7 +719,7 @@
   function initHeroMouseParallax() {
     if (!window.matchMedia('(pointer: fine)').matches) return;
 
-    var heroTitle = document.querySelector('.hero__mask-title');
+    var heroTitle = document.querySelector('.hero__mask-text');
     if (!heroTitle) return;
 
     var targetX = 0;
