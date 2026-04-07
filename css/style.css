@@ -1037,7 +1037,7 @@ button {
   position: relative;
   padding: 120px 0;
   overflow: hidden;
-  min-height: 480px;
+  min-height: 600px;
   display: flex;
   align-items: center;
   background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 30%, #7dd3fc 70%, #38bdf8 100%);
@@ -1045,18 +1045,18 @@ button {
 
 .contact-cta__bg {
   position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 65%;
+  right: -10%;
+  top: -30%;
+  width: 80%;
+  height: 160%;
   z-index: 0;
 }
 
 .contact-cta__bg img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: 60% center;
+  object-fit: contain;
+  object-position: right center;
 }
 
 .contact-cta__overlay {
