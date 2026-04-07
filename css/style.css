@@ -1040,23 +1040,21 @@ button {
   min-height: 600px;
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 30%, #7dd3fc 70%, #38bdf8 100%);
+  background: #2563eb;
 }
 
 .contact-cta__bg {
   position: absolute;
-  right: -10%;
-  top: -30%;
-  width: 80%;
-  height: 160%;
+  inset: 0;
   z-index: 0;
+  opacity: 0.6;
 }
 
 .contact-cta__bg img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: right center;
+  object-fit: cover;
+  object-position: center center;
 }
 
 .contact-cta__overlay {
@@ -1112,8 +1110,8 @@ button {
   font-weight: 600;
   letter-spacing: 0.04em;
   padding: 18px 48px;
-  background: #ffffff;
-  color: var(--color-primary);
+  background: transparent;
+  color: #ffffff;
   border: 2px solid #ffffff;
   border-radius: var(--radius);
   transition: background var(--transition),
@@ -1124,9 +1122,9 @@ button {
 }
 
 .contact-cta__btn:hover {
-  background: var(--color-text);
-  color: #fff;
-  border-color: var(--color-text);
+  background: #ffffff;
+  color: var(--color-primary);
+  border-color: #ffffff;
   transform: translateY(-2px);
   gap: 16px;
 }
