@@ -629,7 +629,7 @@ button {
   font-size: clamp(14px, 2vw, 20px);
   font-weight: 500;
   letter-spacing: 0.2em;
-  color: var(--color-border);
+  color: var(--color-text-sub);
   text-transform: uppercase;
   flex-shrink: 0;
 }
