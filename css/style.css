@@ -1035,17 +1035,21 @@ button {
    ============================================ */
 .contact-cta {
   position: relative;
-  padding: 140px 0;
+  padding: 120px 0;
   overflow: hidden;
   min-height: 480px;
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 40%, #f0f9ff 100%);
+  background: var(--color-bg-alt);
 }
 
 .contact-cta__bg {
   position: absolute;
-  inset: 0;
+  right: -5%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 55%;
+  height: 120%;
   z-index: 0;
 }
 
@@ -1054,18 +1058,32 @@ button {
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  opacity: 0.7;
-  mix-blend-mode: multiply;
 }
 
 .contact-cta__overlay {
   display: none;
 }
 
+@media (max-width: 767px) {
+  .contact-cta__bg {
+    width: 100%;
+    right: 0;
+    opacity: 0.3;
+  }
+}
+
 .contact-cta__content {
   position: relative;
   z-index: 1;
-  text-align: center;
+  text-align: left;
+  max-width: 60%;
+}
+
+@media (max-width: 767px) {
+  .contact-cta__content {
+    text-align: center;
+    max-width: 100%;
+  }
 }
 
 .contact-cta__heading {
