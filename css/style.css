@@ -1040,16 +1040,15 @@ button {
   min-height: 480px;
   display: flex;
   align-items: center;
-  background: var(--color-bg-alt);
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 30%, #7dd3fc 70%, #38bdf8 100%);
 }
 
 .contact-cta__bg {
   position: absolute;
-  right: -5%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 55%;
-  height: 120%;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 65%;
   z-index: 0;
 }
 
@@ -1057,7 +1056,7 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center center;
+  object-position: 60% center;
 }
 
 .contact-cta__overlay {
@@ -1090,7 +1089,7 @@ button {
   font-family: var(--font-body);
   font-size: clamp(32px, 6vw, 56px);
   font-weight: 500;
-  color: var(--color-text);
+  color: #ffffff;
   line-height: 1.3;
   margin-bottom: 12px;
 }
@@ -1099,7 +1098,7 @@ button {
   font-family: var(--font-heading);
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-text-sub);
+  color: rgba(255, 255, 255, 0.8);
   letter-spacing: 0.1em;
   margin-bottom: 48px;
 }
@@ -1113,9 +1112,9 @@ button {
   font-weight: 600;
   letter-spacing: 0.04em;
   padding: 18px 48px;
-  background: transparent;
-  color: var(--color-text);
-  border: 2px solid var(--color-text);
+  background: #ffffff;
+  color: var(--color-primary);
+  border: 2px solid #ffffff;
   border-radius: var(--radius);
   transition: background var(--transition),
               color var(--transition),
@@ -1125,9 +1124,9 @@ button {
 }
 
 .contact-cta__btn:hover {
-  background: var(--color-primary);
+  background: var(--color-text);
   color: #fff;
-  border-color: var(--color-primary);
+  border-color: var(--color-text);
   transform: translateY(-2px);
   gap: 16px;
 }
