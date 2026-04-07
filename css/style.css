@@ -1948,45 +1948,36 @@ button {
    ============================================ */
 .history-section {
   padding: var(--space-section) 0;
-  background: var(--color-footer);
-  color: #e2e8f0;
   position: relative;
   overflow: hidden;
 }
 
-/* アーチモチーフを背景に大きく配置 */
-.history-section::before {
-  content: '';
+.history-section__bg {
   position: absolute;
-  right: -10%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 500px;
-  height: 600px;
-  border: 2px solid rgba(37, 99, 235, 0.12);
-  border-radius: 250px 250px 0 0;
-  border-bottom: none;
+  inset: 0;
+  z-index: 0;
 }
 
-.history-section::after {
-  content: '';
+.history-section__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.history-section__overlay {
   position: absolute;
-  right: -5%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 350px;
-  height: 420px;
-  border: 1px solid rgba(37, 99, 235, 0.06);
-  border-radius: 175px 175px 0 0;
-  border-bottom: none;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.88) 0%,
+    rgba(248, 250, 252, 0.82) 50%,
+    rgba(255, 255, 255, 0.85) 100%
+  );
 }
 
-.history-section .section-title__en {
-  color: #fff;
-}
-
-.history-section .section-title__ja {
-  color: #94a3b8;
+.history-section .container {
+  position: relative;
+  z-index: 1;
 }
 
 .history-timeline {
@@ -2024,22 +2015,23 @@ button {
   height: 14px;
   border-radius: 50%;
   background: var(--color-primary);
-  border: 3px solid var(--color-footer);
-  box-shadow: 0 0 0 2px var(--color-primary), 0 0 12px rgba(37, 99, 235, 0.3);
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 2px var(--color-primary), 0 0 12px rgba(37, 99, 235, 0.15);
 }
 
 .history-timeline__date {
   font-family: var(--font-heading);
   font-size: 15px;
-  font-weight: 600;
-  color: var(--color-primary-light);
+  font-weight: 700;
+  color: var(--color-text);
   letter-spacing: 0.06em;
   margin-bottom: 6px;
 }
 
 .history-timeline__text {
   font-size: 15px;
-  color: #94a3b8;
+  font-weight: 400;
+  color: var(--color-text);
   line-height: 1.7;
 }
 
