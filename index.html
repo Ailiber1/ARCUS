@@ -19,6 +19,15 @@
 </head>
 <body class="page-enter">
 
+  <!-- Page Wipe Transition -->
+  <div class="page-wipe" aria-hidden="true"></div>
+
+  <!-- Custom Cursor (desktop only) -->
+  <div class="custom-cursor" aria-hidden="true">
+    <div class="custom-cursor__dot"></div>
+    <div class="custom-cursor__label">View</div>
+  </div>
+
   <!-- ========== Header ========== -->
   <header class="site-header">
     <div class="container">
@@ -66,8 +75,12 @@
     </svg>
 
     <div class="container hero__content">
-      <h1 class="hero__copy fade-up">Bridging<br>Business<br>to the Future.</h1>
-      <p class="hero__sub fade-up">テクノロジーで、働く人を自由にする。</p>
+      <h1 class="hero__copy">
+        <span class="hero__line reveal-line"><span class="reveal-line__inner">Bridging</span></span>
+        <span class="hero__line reveal-line"><span class="reveal-line__inner">Business</span></span>
+        <span class="hero__line reveal-line"><span class="reveal-line__inner">to the Future.</span></span>
+      </h1>
+      <p class="hero__sub reveal-line"><span class="reveal-line__inner">テクノロジーで、働く人を自由にする。</span></p>
     </div>
 
     <div class="hero__scroll">
@@ -122,12 +135,12 @@
       <div class="service__list">
 
         <!-- Service 01 -->
-        <div class="service__item fade-up">
+        <div class="service__item fade-up" data-stagger="0">
           <div class="service__image">
+            <div class="service__number">01</div>
             <img src="images/service-dx.jpg" alt="DXコンサルティングのイメージ" width="600" height="450" loading="lazy">
           </div>
           <div class="service__body">
-            <div class="service__number">01</div>
             <h3 class="service__name">DX Consulting</h3>
             <p class="service__desc">業務フローの可視化から最適なデジタルツールの選定・導入まで、御社の規模に合ったDX戦略を設計します。</p>
             <a href="services.html#dx-strategy" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
@@ -135,12 +148,12 @@
         </div>
 
         <!-- Service 02 -->
-        <div class="service__item fade-up">
+        <div class="service__item fade-up" data-stagger="1">
           <div class="service__image">
+            <div class="service__number">02</div>
             <img src="images/service-dev.jpg" alt="システム開発のイメージ" width="600" height="450" loading="lazy">
           </div>
           <div class="service__body">
-            <div class="service__number">02</div>
             <h3 class="service__name">System Development</h3>
             <p class="service__desc">業務システム、Webアプリケーション、API連携まで。使い続けられるシステムを、適正な価格で。</p>
             <a href="services.html#development" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
@@ -148,12 +161,12 @@
         </div>
 
         <!-- Service 03 -->
-        <div class="service__item fade-up">
+        <div class="service__item fade-up" data-stagger="2">
           <div class="service__image">
+            <div class="service__number">03</div>
             <img src="images/service-support.jpg" alt="IT運用サポートのイメージ" width="600" height="450" loading="lazy">
           </div>
           <div class="service__body">
-            <div class="service__number">03</div>
             <h3 class="service__name">IT Support</h3>
             <p class="service__desc">専任の情シス担当がいなくても安心。月額固定でヘルプデスクからインフラ管理まで対応します。</p>
             <a href="services.html#it-advisory" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
@@ -171,33 +184,30 @@
         <span class="section-title__en">Why ARCUS</span>
         <span class="section-title__ja">選ばれる理由</span>
       </div>
-      <div class="why__grid">
+      <div class="why__list">
 
-        <div class="why__card fade-up">
-          <div class="why__card-number">01</div>
-          <div class="why__card-icon">
-            <i data-lucide="target" width="40" height="40"></i>
+        <div class="why__item fade-up" data-stagger="0">
+          <div class="why__item-number">01</div>
+          <div class="why__item-body">
+            <h3 class="why__item-title">中小企業専門</h3>
+            <p class="why__item-desc">御社の規模に合った最適解を。大企業向けの過剰な提案はしません。</p>
           </div>
-          <h3 class="why__card-title">中小企業専門</h3>
-          <p class="why__card-desc">御社の規模に合った最適解を。大企業向けの過剰な提案はしません。</p>
         </div>
 
-        <div class="why__card fade-up">
-          <div class="why__card-number">02</div>
-          <div class="why__card-icon">
-            <i data-lucide="handshake" width="40" height="40"></i>
+        <div class="why__item fade-up" data-stagger="1">
+          <div class="why__item-number">02</div>
+          <div class="why__item-body">
+            <h3 class="why__item-title">伴走型支援</h3>
+            <p class="why__item-desc">導入して終わりではない。定着するまで並走します。</p>
           </div>
-          <h3 class="why__card-title">伴走型支援</h3>
-          <p class="why__card-desc">導入して終わりではない。定着するまで並走します。</p>
         </div>
 
-        <div class="why__card fade-up">
-          <div class="why__card-number">03</div>
-          <div class="why__card-icon">
-            <i data-lucide="file-check" width="40" height="40"></i>
+        <div class="why__item fade-up" data-stagger="2">
+          <div class="why__item-number">03</div>
+          <div class="why__item-body">
+            <h3 class="why__item-title">透明な料金</h3>
+            <p class="why__item-desc">見積もりの内訳をすべて公開。追加費用なし。</p>
           </div>
-          <h3 class="why__card-title">透明な料金</h3>
-          <p class="why__card-desc">見積もりの内訳をすべて公開。追加費用なし。</p>
         </div>
 
       </div>
@@ -233,6 +243,9 @@
 
   <!-- ========== Footer ========== -->
   <footer class="site-footer">
+    <!-- Background ARCUS watermark -->
+    <div class="site-footer__watermark" aria-hidden="true">ARCUS</div>
+
     <!-- Arch motif -->
     <svg class="site-footer__arch" viewBox="0 0 160 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M10 80 L10 40 Q10 10 80 10 Q150 10 150 40 L150 80" stroke="#ffffff" stroke-width="1.5" fill="none"/>

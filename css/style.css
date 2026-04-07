@@ -1,33 +1,39 @@
 /* ============================================
    ARCUS Corporate Site — style.css
+   Full Redesign: Designer-grade, zero template feel
    Mobile-first (375px → 768px → 1024px → 1280px)
    ============================================ */
 
 :root {
   --color-primary: #2563eb;
   --color-primary-light: #60a5fa;
+  --color-primary-dark: #1d4ed8;
+  --color-accent: #2563eb;
   --color-bg: #ffffff;
   --color-bg-alt: #f8fafc;
   --color-text: #1e293b;
   --color-text-sub: #64748b;
   --color-border: #e2e8f0;
-  --color-footer: #1e293b;
+  --color-footer: #0f172a;
   --font-heading: 'Space Grotesk', sans-serif;
   --font-body: 'Noto Sans JP', sans-serif;
-  --font-size-hero: clamp(48px, 8vw, 120px);
-  --font-size-section: clamp(48px, 6vw, 100px);
+  --font-mono: 'Space Grotesk', monospace;
+  --font-size-hero: clamp(60px, 12vw, 160px);
+  --font-size-section: clamp(60px, 8vw, 120px);
   --font-size-h2: clamp(28px, 4vw, 48px);
   --font-size-body: 1rem;
-  --space-section: 160px;
+  --space-section: clamp(100px, 12vw, 200px);
   --space-block: 80px;
   --space-element: 40px;
   --space-tight: 16px;
   --max-width: 1200px;
   --max-text: 640px;
   --radius: 4px;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-hover: 0 15px 35px rgba(23, 23, 23, 0.08);
-  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 20px 40px rgba(23, 23, 23, 0.08);
+  --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ---- Reset ---- */
@@ -48,12 +54,21 @@ body {
   font-family: var(--font-body);
   font-weight: 300;
   font-size: var(--font-size-body);
-  line-height: 1.8;
+  line-height: 2.0;
   color: var(--color-text);
   background: var(--color-bg);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Hide default cursor on desktop when custom cursor active */
+@media (pointer: fine) {
+  body.cursor-active,
+  body.cursor-active a,
+  body.cursor-active button {
+    cursor: none !important;
+  }
 }
 
 img {
@@ -98,18 +113,136 @@ button {
   }
 }
 
-/* Scroll animation targets */
+/* ============================================
+   Page Wipe Transition
+   ============================================ */
+.page-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--color-primary);
+  transform: scaleY(1);
+  transform-origin: top;
+  animation: wipeOut 0.8s 0.1s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes wipeOut {
+  0% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+/* ============================================
+   Custom Cursor (desktop only)
+   ============================================ */
+.custom-cursor {
+  display: none;
+}
+
+@media (pointer: fine) {
+  .custom-cursor {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    pointer-events: none;
+    mix-blend-mode: difference;
+  }
+
+  .custom-cursor__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    transform: translate(-50%, -50%);
+    transition: width 0.3s var(--ease-out-expo),
+                height 0.3s var(--ease-out-expo),
+                background 0.3s var(--ease-out-expo);
+    will-change: transform;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .custom-cursor.is-hover .custom-cursor__dot {
+    width: 48px;
+    height: 48px;
+    background: #fff;
+    mix-blend-mode: difference;
+  }
+
+  .custom-cursor__label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-heading);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .custom-cursor.is-hover .custom-cursor__label {
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   Scroll Animations — Split Reveal
+   ============================================ */
+
+/* Fade-up with clip reveal */
 .fade-up {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(40px);
+  transition: opacity 0.9s var(--ease-out-expo),
+              transform 0.9s var(--ease-out-expo);
 }
 
 .fade-up.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Stagger support */
+.fade-up[data-stagger="1"] { transition-delay: 0.1s; }
+.fade-up[data-stagger="2"] { transition-delay: 0.2s; }
+.fade-up[data-stagger="3"] { transition-delay: 0.3s; }
+.fade-up[data-stagger="4"] { transition-delay: 0.4s; }
+
+/* Split reveal — text slides from behind clip mask */
+.reveal-line {
+  display: block;
+  overflow: hidden;
+}
+
+.reveal-line__inner {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 0.9s var(--ease-out-expo);
+}
+
+.reveal-line.is-visible .reveal-line__inner,
+.is-visible .reveal-line .reveal-line__inner {
+  transform: translateY(0);
+}
+
+/* Stagger for hero lines */
+.hero__line:nth-child(1) .reveal-line__inner { transition-delay: 0.15s; }
+.hero__line:nth-child(2) .reveal-line__inner { transition-delay: 0.3s; }
+.hero__line:nth-child(3) .reveal-line__inner { transition-delay: 0.45s; }
+.hero__sub .reveal-line__inner { transition-delay: 0.65s; }
 
 /* Section title pattern */
 .section-title {
@@ -120,8 +253,8 @@ button {
   font-family: var(--font-heading);
   font-size: var(--font-size-section);
   font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
   color: var(--color-text);
 }
 
@@ -129,10 +262,10 @@ button {
   display: block;
   margin-top: 8px;
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--color-text-sub);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.15em;
 }
 
 /* ============================================
@@ -151,9 +284,9 @@ button {
 }
 
 .site-header.is-scrolled {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 1px 0 var(--color-border);
 }
 
@@ -223,7 +356,7 @@ button {
 }
 
 .site-header__cta:hover {
-  background: #1d4ed8;
+  background: var(--color-primary-dark);
   transform: translateY(-1px);
 }
 
@@ -231,6 +364,15 @@ button {
   .site-header__cta {
     display: inline-block;
   }
+}
+
+/* is-current nav indicator */
+.site-header__nav a.is-current::after {
+  width: 100%;
+}
+
+.site-header__nav a.is-current {
+  color: var(--color-primary);
 }
 
 /* Hamburger */
@@ -319,11 +461,12 @@ button {
 }
 
 /* ============================================
-   Hero
+   Hero — Ultra large typography + parallax
    ============================================ */
 .hero {
   position: relative;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -332,8 +475,10 @@ button {
 
 .hero__bg {
   position: absolute;
-  inset: 0;
+  inset: -20% 0 0 0;
   z-index: 0;
+  will-change: transform;
+  height: 120%;
 }
 
 .hero__bg img {
@@ -347,9 +492,9 @@ button {
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.55) 0%,
-    rgba(248, 250, 252, 0.45) 50%,
-    rgba(219, 234, 254, 0.3) 100%
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(248, 250, 252, 0.5) 50%,
+    rgba(219, 234, 254, 0.35) 100%
   );
 }
 
@@ -359,7 +504,7 @@ button {
   top: 10%;
   width: 50vw;
   height: 60vh;
-  opacity: 0.08;
+  opacity: 0.06;
   z-index: 1;
 }
 
@@ -367,7 +512,7 @@ button {
   .hero__arch {
     right: 2%;
     width: 40vw;
-    opacity: 0.1;
+    opacity: 0.08;
   }
 }
 
@@ -380,10 +525,14 @@ button {
   font-family: var(--font-heading);
   font-size: var(--font-size-hero);
   font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  line-height: 1.02;
+  letter-spacing: -0.05em;
   color: var(--color-text);
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+}
+
+.hero__line {
+  display: block;
 }
 
 .hero__sub {
@@ -395,41 +544,67 @@ button {
   line-height: 1.6;
 }
 
+/* Scroll indicator — line grows animation */
 .hero__scroll {
   position: absolute;
   bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 40px;
   z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   color: var(--color-text-sub);
   font-family: var(--font-heading);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.12em;
-  animation: scrollBounce 2s ease-in-out infinite;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
 }
 
 .hero__scroll-line {
   width: 1px;
-  height: 40px;
-  background: linear-gradient(to bottom, var(--color-text-sub), transparent);
+  height: 0;
+  background: var(--color-text-sub);
+  animation: lineGrow 2s ease-in-out infinite;
 }
 
-@keyframes scrollBounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(8px); }
+@keyframes lineGrow {
+  0% {
+    height: 0;
+    opacity: 1;
+  }
+  50% {
+    height: 60px;
+    opacity: 1;
+  }
+  100% {
+    height: 60px;
+    opacity: 0;
+  }
 }
 
 /* ============================================
-   Numbers
+   Numbers — Giant numbers with arch SVG
    ============================================ */
 .numbers {
   background: var(--color-bg-alt);
   padding: var(--space-section) 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle arch SVG pattern behind numbers */
+.numbers::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300' fill='none'%3E%3Cpath d='M50 300 L50 120 Q50 20 200 20 Q350 20 350 120 L350 300' stroke='%232563eb' stroke-width='1' fill='none' opacity='0.06'/%3E%3Cpath d='M100 300 L100 140 Q100 60 200 60 Q300 60 300 140 L300 300' stroke='%232563eb' stroke-width='0.5' fill='none' opacity='0.04'/%3E%3C/svg%3E") center/contain no-repeat;
+  pointer-events: none;
 }
 
 .numbers__grid {
@@ -437,6 +612,8 @@ button {
   grid-template-columns: repeat(2, 1fr);
   gap: 40px 20px;
   margin-top: var(--space-element);
+  position: relative;
+  z-index: 1;
 }
 
 @media (min-width: 768px) {
@@ -452,11 +629,24 @@ button {
 
 .numbers__value {
   font-family: var(--font-heading);
-  font-size: clamp(48px, 6vw, 80px);
+  font-size: clamp(80px, 12vw, 140px);
   font-weight: 700;
   color: var(--color-primary);
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+}
+
+/* Bounce animation class added via JS */
+.numbers__value.is-bounced span {
+  display: inline-block;
+  animation: numBounce 0.5s var(--ease-out-expo);
+}
+
+@keyframes numBounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08); }
+  70% { transform: scale(0.97); }
+  100% { transform: scale(1); }
 }
 
 .numbers__suffix {
@@ -465,15 +655,15 @@ button {
 }
 
 .numbers__label {
-  margin-top: 8px;
+  margin-top: 12px;
   font-size: 13px;
   font-weight: 500;
   color: var(--color-text-sub);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
 }
 
 /* ============================================
-   Service
+   Service — Clip-path image reveal
    ============================================ */
 .service {
   padding: var(--space-section) 0;
@@ -484,12 +674,12 @@ button {
   margin-top: var(--space-block);
   display: flex;
   flex-direction: column;
-  gap: 80px;
+  gap: 100px;
 }
 
 @media (min-width: 768px) {
   .service__list {
-    gap: 120px;
+    gap: 140px;
   }
 }
 
@@ -519,39 +709,42 @@ button {
   position: relative;
   overflow: hidden;
   border-radius: var(--radius);
-  border: 1px solid var(--color-border);
   aspect-ratio: 4 / 3;
+  clip-path: inset(5%);
+  transition: clip-path 0.6s var(--ease-out-expo);
+}
+
+.service__item:hover .service__image {
+  clip-path: inset(0%);
 }
 
 .service__image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.8s var(--ease-out-expo);
 }
 
 .service__item:hover .service__image img {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
-.service__item:hover .service__image {
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-hover);
-}
-
+/* Giant semi-transparent number overlay on image */
 .service__number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-family: var(--font-heading);
-  font-size: clamp(64px, 8vw, 100px);
+  font-size: clamp(120px, 18vw, 220px);
   font-weight: 700;
-  color: var(--color-border);
+  color: rgba(255, 255, 255, 0.9);
   line-height: 1;
   letter-spacing: -0.04em;
-  margin-bottom: 12px;
-  transition: color var(--transition);
-}
-
-.service__item:hover .service__number {
-  color: var(--color-primary-light);
+  mix-blend-mode: overlay;
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity var(--transition);
 }
 
 .service__name {
@@ -566,7 +759,7 @@ button {
 .service__desc {
   font-size: 15px;
   color: var(--color-text-sub);
-  line-height: 1.8;
+  line-height: 2.0;
   max-width: 440px;
   margin-bottom: 24px;
 }
@@ -583,82 +776,121 @@ button {
   transition: gap var(--transition);
 }
 
+.service__link span {
+  display: inline-block;
+  transition: transform var(--transition);
+}
+
 .service__link:hover {
-  gap: 14px;
+  gap: 8px;
+}
+
+.service__link:hover span {
+  transform: translateX(6px);
+}
+
+/* Move number to image overlay on desktop */
+@media (min-width: 768px) {
+  .service__body {
+    position: relative;
+  }
+
+  .service__number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .service__image .service__number {
+    /* positioned inside image */
+  }
 }
 
 /* ============================================
-   Why ARCUS
+   Why ARCUS — Horizontal layout
    ============================================ */
 .why {
   background: var(--color-bg-alt);
   padding: var(--space-section) 0;
 }
 
-.why__grid {
+.why__list {
   margin-top: var(--space-block);
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-element);
+  display: flex;
+  flex-direction: column;
+}
+
+.why__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 36px 0;
+  border-bottom: 1px solid var(--color-accent);
+  border-bottom-width: 1px;
+  border-image: linear-gradient(to right, var(--color-primary), transparent) 1;
+  transition: transform var(--transition);
+}
+
+.why__item:first-child {
+  border-top: 1px solid var(--color-border);
 }
 
 @media (min-width: 768px) {
-  .why__grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
+  .why__item {
+    gap: 60px;
+    padding: 48px 0;
   }
 }
 
-.why__card {
-  padding: 40px 28px;
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  transition: transform var(--transition),
-              border-color var(--transition),
-              box-shadow var(--transition);
+.why__item:hover .why__item-body {
+  transform: translateX(8px);
 }
 
-.why__card:hover {
-  transform: scale(1.02);
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-hover);
-}
-
-.why__card-number {
+.why__item-number {
   font-family: var(--font-heading);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--color-primary);
-  letter-spacing: 0.06em;
-  margin-bottom: 20px;
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 700;
+  color: var(--color-border);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  flex-shrink: 0;
+  transition: color var(--transition);
 }
 
-.why__card-icon {
-  width: 40px;
-  height: 40px;
-  color: var(--color-primary);
-  margin-bottom: 20px;
+.why__item:hover .why__item-number {
+  color: var(--color-primary-light);
 }
 
-.why__card-title {
+.why__item-body {
+  transition: transform var(--transition);
+  padding-top: 8px;
+}
+
+@media (min-width: 768px) {
+  .why__item-body {
+    padding-top: 16px;
+  }
+}
+
+.why__item-title {
   font-family: var(--font-body);
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--color-text);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   line-height: 1.4;
 }
 
-.why__card-desc {
-  font-size: 14px;
+.why__item-desc {
+  font-size: 15px;
   color: var(--color-text-sub);
-  line-height: 1.8;
+  line-height: 2.0;
+  max-width: 500px;
 }
 
 /* ============================================
-   News
+   News — Monospace dates, accent bar hover
    ============================================ */
 .news {
   padding: var(--space-section) 0;
@@ -676,12 +908,36 @@ button {
   flex-direction: column;
   gap: 8px;
   padding: 24px 0;
-  border-bottom: 1px solid var(--color-border);
-  transition: background var(--transition);
+  padding-left: 0;
+  border-bottom: 1px dashed var(--color-border);
+  transition: padding-left var(--transition);
+  position: relative;
+}
+
+/* Accent bar on hover */
+.news__item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--color-primary);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform var(--transition);
+}
+
+.news__item:hover::before {
+  transform: scaleY(1);
+}
+
+.news__item:hover {
+  padding-left: 16px;
 }
 
 .news__item:first-child {
-  border-top: 1px solid var(--color-border);
+  border-top: 1px dashed var(--color-border);
 }
 
 @media (min-width: 768px) {
@@ -689,11 +945,12 @@ button {
     flex-direction: row;
     align-items: center;
     gap: 24px;
-    padding: 28px 16px;
+    padding: 28px 0;
+    padding-left: 0;
   }
 
   .news__item:hover {
-    background: var(--color-bg-alt);
+    padding-left: 20px;
   }
 }
 
@@ -705,12 +962,13 @@ button {
 }
 
 .news__date {
-  font-family: var(--font-heading);
+  font-family: var(--font-mono);
   font-size: 13px;
   font-weight: 500;
   color: var(--color-text-sub);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 .news__tag {
@@ -738,6 +996,16 @@ button {
   color: #a16207;
 }
 
+.news__tag--service {
+  background: #faf5ff;
+  color: #7c3aed;
+}
+
+.news__tag--recruit {
+  background: #fff1f2;
+  color: #e11d48;
+}
+
 .news__title {
   font-size: 15px;
   font-weight: 500;
@@ -763,7 +1031,7 @@ button {
 }
 
 /* ============================================
-   Contact CTA
+   Contact CTA — Full-width, outline button, parallax
    ============================================ */
 .contact-cta {
   position: relative;
@@ -773,8 +1041,10 @@ button {
 
 .contact-cta__bg {
   position: absolute;
-  inset: 0;
+  inset: -20% 0 0 0;
   z-index: 0;
+  will-change: transform;
+  height: 140%;
 }
 
 .contact-cta__bg img {
@@ -788,8 +1058,8 @@ button {
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.55) 0%,
-    rgba(248, 250, 252, 0.45) 100%
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(248, 250, 252, 0.5) 100%
   );
 }
 
@@ -801,10 +1071,10 @@ button {
 
 .contact-cta__heading {
   font-family: var(--font-body);
-  font-size: clamp(28px, 5vw, 48px);
+  font-size: clamp(32px, 6vw, 56px);
   font-weight: 500;
   color: var(--color-text);
-  line-height: 1.4;
+  line-height: 1.3;
   margin-bottom: 12px;
 }
 
@@ -813,8 +1083,8 @@ button {
   font-size: 14px;
   font-weight: 500;
   color: var(--color-text-sub);
-  letter-spacing: 0.08em;
-  margin-bottom: 40px;
+  letter-spacing: 0.1em;
+  margin-bottom: 48px;
 }
 
 .contact-cta__btn {
@@ -825,15 +1095,22 @@ button {
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.04em;
-  padding: 16px 40px;
-  background: var(--color-primary);
-  color: #fff;
+  padding: 18px 48px;
+  background: transparent;
+  color: var(--color-text);
+  border: 2px solid var(--color-text);
   border-radius: var(--radius);
-  transition: background var(--transition), transform var(--transition), gap var(--transition);
+  transition: background var(--transition),
+              color var(--transition),
+              transform var(--transition),
+              gap var(--transition),
+              border-color var(--transition);
 }
 
 .contact-cta__btn:hover {
-  background: #1d4ed8;
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
   transform: translateY(-2px);
   gap: 16px;
 }
@@ -848,6 +1125,23 @@ button {
   overflow: hidden;
 }
 
+/* Giant ARCUS watermark */
+.site-footer__watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-heading);
+  font-size: clamp(120px, 20vw, 280px);
+  font-weight: 700;
+  color: #fff;
+  opacity: 0.03;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
 .site-footer__arch {
   position: absolute;
   top: -1px;
@@ -860,6 +1154,8 @@ button {
 
 .site-footer__inner {
   padding: 80px 0 40px;
+  position: relative;
+  z-index: 1;
 }
 
 .site-footer__grid {
@@ -888,7 +1184,7 @@ button {
   font-size: 13px;
   font-weight: 300;
   color: #94a3b8;
-  line-height: 1.8;
+  line-height: 2.0;
   max-width: 300px;
 }
 
@@ -912,11 +1208,34 @@ button {
   font-size: 14px;
   font-weight: 300;
   color: var(--color-border);
-  transition: color var(--transition);
+  transition: color var(--transition), padding-left var(--transition);
+  position: relative;
+  padding-left: 0;
+}
+
+/* Dot on hover */
+.site-footer__links a::before {
+  content: '';
+  position: absolute;
+  left: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  opacity: 0;
+  transition: opacity var(--transition), left var(--transition);
 }
 
 .site-footer__links a:hover {
   color: #fff;
+  padding-left: 16px;
+}
+
+.site-footer__links a:hover::before {
+  opacity: 1;
+  left: 0;
 }
 
 .site-footer__contact-info p {
@@ -929,7 +1248,7 @@ button {
 .site-footer__bottom {
   margin-top: 60px;
   padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -946,13 +1265,13 @@ button {
 .site-footer__copy {
   font-size: 12px;
   font-weight: 300;
-  color: #64748b;
+  color: #475569;
 }
 
 .site-footer__policy {
   font-size: 12px;
   font-weight: 300;
-  color: #64748b;
+  color: #475569;
   background: none;
   border: none;
   cursor: pointer;
@@ -1026,7 +1345,7 @@ button {
 .modal__body {
   font-size: 14px;
   color: var(--color-text-sub);
-  line-height: 1.8;
+  line-height: 2.0;
 }
 
 .modal__body h3 {
@@ -1053,22 +1372,11 @@ button {
 
 .page-enter.is-loaded {
   opacity: 1;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.5s 0.3s ease;
 }
 
 /* ============================================
-   Header: is-current nav indicator
-   ============================================ */
-.site-header__nav a.is-current::after {
-  width: 100%;
-}
-
-.site-header__nav a.is-current {
-  color: var(--color-primary);
-}
-
-/* ============================================
-   Sub Page Hero
+   Sub Page Hero — Text-stroke style
    ============================================ */
 .sub-hero {
   position: relative;
@@ -1091,8 +1399,10 @@ button {
 
 .sub-hero__bg {
   position: absolute;
-  inset: 0;
+  inset: -10% 0 0 0;
   z-index: 0;
+  will-change: transform;
+  height: 120%;
 }
 
 .sub-hero__bg img {
@@ -1106,9 +1416,9 @@ button {
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.5) 0%,
-    rgba(248, 250, 252, 0.4) 50%,
-    rgba(255, 255, 255, 0.35) 100%
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(248, 250, 252, 0.45) 50%,
+    rgba(255, 255, 255, 0.4) 100%
   );
 }
 
@@ -1129,11 +1439,13 @@ button {
 
 .sub-hero__title {
   font-family: var(--font-heading);
-  font-size: clamp(64px, 10vw, 100px);
+  font-size: clamp(72px, 14vw, 140px);
   font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  color: var(--color-text);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  -webkit-text-stroke: 2px var(--color-text);
+  color: transparent;
+  text-shadow: none;
 }
 
 .sub-hero__sub {
@@ -1143,7 +1455,7 @@ button {
   font-weight: 500;
   color: var(--color-text);
   line-height: 1.6;
-  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 12px rgba(255, 255, 255, 0.9);
 }
 
 /* ============================================
@@ -1225,7 +1537,7 @@ button {
 .svc-detail__desc {
   font-size: 15px;
   color: var(--color-text-sub);
-  line-height: 1.8;
+  line-height: 2.0;
   margin-bottom: 24px;
 }
 
@@ -1400,7 +1712,7 @@ button {
   color: var(--color-primary);
 }
 
-/* Process Timeline (vertical) */
+/* Process Timeline (vertical) — enhanced visual */
 .process-section {
   background: var(--color-bg-alt);
   padding: var(--space-section) 0;
@@ -1409,17 +1721,18 @@ button {
 .process-timeline {
   margin-top: var(--space-block);
   position: relative;
-  padding-left: 60px;
+  padding-left: 72px;
 }
 
 .process-timeline::before {
   content: '';
   position: absolute;
-  left: 24px;
+  left: 28px;
   top: 0;
   bottom: 0;
-  width: 1px;
-  background: var(--color-border);
+  width: 3px;
+  background: linear-gradient(to bottom, var(--color-primary), var(--color-primary-light));
+  border-radius: 2px;
 }
 
 .process-timeline__item {
@@ -1433,19 +1746,20 @@ button {
 
 .process-timeline__num {
   position: absolute;
-  left: -60px;
+  left: -72px;
   top: 0;
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: var(--color-primary);
   color: #fff;
   font-family: var(--font-heading);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .process-timeline__content h3 {
@@ -1460,7 +1774,7 @@ button {
 .process-timeline__content p {
   font-size: 15px;
   color: var(--color-text-sub);
-  line-height: 1.8;
+  line-height: 2.0;
 }
 
 /* ============================================
@@ -1504,7 +1818,7 @@ button {
 .message__body p {
   font-size: 15px;
   color: var(--color-text-sub);
-  line-height: 2;
+  line-height: 2.0;
   margin-bottom: 20px;
 }
 
@@ -1625,7 +1939,7 @@ button {
 .team__body p {
   font-size: 15px;
   color: var(--color-text-sub);
-  line-height: 1.8;
+  line-height: 2.0;
   margin-bottom: 16px;
 }
 
@@ -1799,11 +2113,30 @@ button {
 
 /* News Accordion Item */
 .news-accordion {
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px dashed var(--color-border);
+  position: relative;
 }
 
 .news-accordion:first-child {
-  border-top: 1px solid var(--color-border);
+  border-top: 1px dashed var(--color-border);
+}
+
+/* Accent bar on hover */
+.news-accordion::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--color-primary);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform var(--transition);
+}
+
+.news-accordion:hover::before {
+  transform: scaleY(1);
 }
 
 .news-accordion__header {
@@ -1811,8 +2144,9 @@ button {
   flex-direction: column;
   gap: 8px;
   padding: 24px 0;
+  padding-left: 0;
   cursor: pointer;
-  transition: background var(--transition);
+  transition: background var(--transition), padding-left var(--transition);
   width: 100%;
   text-align: left;
   background: none;
@@ -1820,16 +2154,21 @@ button {
   font-family: inherit;
 }
 
+.news-accordion:hover .news-accordion__header {
+  padding-left: 16px;
+}
+
 @media (min-width: 768px) {
   .news-accordion__header {
     flex-direction: row;
     align-items: center;
     gap: 24px;
-    padding: 28px 16px;
+    padding: 28px 0;
+    padding-left: 0;
   }
 
-  .news-accordion__header:hover {
-    background: var(--color-bg-alt);
+  .news-accordion:hover .news-accordion__header {
+    padding-left: 20px;
   }
 }
 
@@ -1841,12 +2180,13 @@ button {
 }
 
 .news-accordion__date {
-  font-family: var(--font-heading);
+  font-family: var(--font-mono);
   font-size: 13px;
   font-weight: 500;
   color: var(--color-text-sub);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 .news-accordion__title {
@@ -1882,18 +2222,7 @@ button {
   padding: 0 16px 24px;
   font-size: 14px;
   color: var(--color-text-sub);
-  line-height: 1.8;
-}
-
-/* News Tags — additional colors */
-.news__tag--service {
-  background: #faf5ff;
-  color: #7c3aed;
-}
-
-.news__tag--recruit {
-  background: #fff1f2;
-  color: #e11d48;
+  line-height: 2.0;
 }
 
 /* ============================================
@@ -1991,7 +2320,7 @@ button {
 .contact-form__select,
 .contact-form__textarea {
   width: 100%;
-  padding: 12px 16px;
+  padding: 14px 16px;
   font-family: var(--font-body);
   font-size: 15px;
   font-weight: 300;
@@ -2055,7 +2384,7 @@ button {
 }
 
 .contact-form__submit:hover {
-  background: #1d4ed8;
+  background: var(--color-primary-dark);
   transform: translateY(-2px);
   gap: 16px;
 }
@@ -2100,4 +2429,11 @@ button {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ============================================
+   Magnetic Button utility class
+   ============================================ */
+.magnetic-btn {
+  transition: transform 0.3s var(--ease-out-expo);
 }

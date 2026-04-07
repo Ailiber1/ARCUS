@@ -1,5 +1,7 @@
 /* ============================================
    ARCUS Corporate Site — main.js
+   Full Redesign: Parallax, Custom Cursor,
+   Magnetic Buttons, Split Reveal, Stagger
    ============================================ */
 
 (function () {
@@ -9,7 +11,7 @@
   var SUPABASE_URL = 'https://pcsggtyuwfhqbmjczraq.supabase.co';
   var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjc2dndHl1d2ZocWJtamN6cmFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMzIwMDQsImV4cCI6MjA5MDcwODAwNH0._q1xfP1jMRXj2amFld47UpSCnM-Zl0sqeSJ6UF_79EY';
 
-  /* ---- Page load fade-in ---- */
+  /* ---- Page load ---- */
   window.addEventListener('DOMContentLoaded', function () {
     requestAnimationFrame(function () {
       document.body.classList.add('is-loaded');
@@ -20,20 +22,20 @@
       lucide.createIcons();
     }
 
-    /* Init news (top page) */
+    /* Init all modules */
     loadTopNews();
-
-    /* Init news (news page) */
     loadNewsPage();
-
-    /* Init contact form */
     initContactForm();
-
-    /* Re-init fade-up observers for sub pages */
     initFadeUp();
+    initRevealLines();
+    initCustomCursor();
+    initParallax();
+    initMagneticButtons();
   });
 
-  /* ---- Header scroll effect ---- */
+  /* ============================================
+     Header scroll effect
+     ============================================ */
   var header = document.querySelector('.site-header');
   var scrollThreshold = 40;
 
@@ -47,7 +49,9 @@
 
   window.addEventListener('scroll', onHeaderScroll, { passive: true });
 
-  /* ---- Hamburger menu ---- */
+  /* ============================================
+     Hamburger menu
+     ============================================ */
   var hamburger = document.querySelector('.hamburger');
   var mobileNav = document.querySelector('.mobile-nav');
   var mobileLinks = mobileNav ? mobileNav.querySelectorAll('a') : [];
@@ -72,7 +76,9 @@
     link.addEventListener('click', closeMenu);
   });
 
-  /* ---- Scroll-triggered fade-up ---- */
+  /* ============================================
+     Scroll-triggered fade-up with stagger
+     ============================================ */
   function initFadeUp() {
     var fadeEls = document.querySelectorAll('.fade-up');
     var fadeObserver = new IntersectionObserver(
@@ -84,7 +90,7 @@
           }
         });
       },
-      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
     );
 
     fadeEls.forEach(function (el) {
@@ -92,26 +98,62 @@
     });
   }
 
-  /* ---- Number count-up ---- */
+  /* ============================================
+     Split Reveal Lines (hero text animation)
+     ============================================ */
+  function initRevealLines() {
+    var revealEls = document.querySelectorAll('.reveal-line');
+    if (!revealEls.length) return;
+
+    var revealObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            /* Also trigger parent's is-visible for stagger */
+            var parent = entry.target.closest('.hero__content, .hero__copy');
+            if (parent) parent.classList.add('is-visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    revealEls.forEach(function (el) {
+      revealObserver.observe(el);
+    });
+  }
+
+  /* ============================================
+     Number count-up with bounce
+     ============================================ */
   var countEls = document.querySelectorAll('[data-count]');
 
   function animateCount(el) {
     var target = parseFloat(el.getAttribute('data-count'));
     var suffix = el.getAttribute('data-suffix') || '';
     var decimals = target % 1 !== 0 ? 1 : 0;
-    var duration = 1800;
+    var duration = 2000;
     var startTime = null;
+    var parentValue = el.closest('.numbers__value');
 
     function step(timestamp) {
       if (!startTime) startTime = timestamp;
       var progress = Math.min((timestamp - startTime) / duration, 1);
-      var ease = 1 - Math.pow(1 - progress, 3);
+      /* easeOutExpo */
+      var ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
       var current = target * ease;
 
       el.textContent = current.toFixed(decimals) + suffix;
 
       if (progress < 1) {
         requestAnimationFrame(step);
+      } else {
+        /* Add bounce effect after count completes */
+        if (parentValue) {
+          parentValue.classList.add('is-bounced');
+        }
       }
     }
 
@@ -135,7 +177,132 @@
     countObserver.observe(el);
   });
 
-  /* ---- Privacy Policy Modal ---- */
+  /* ============================================
+     Parallax effect (hero bg, contact-cta bg, sub-hero bg)
+     ============================================ */
+  function initParallax() {
+    var parallaxTargets = [];
+
+    /* Hero background */
+    var heroBg = document.querySelector('.hero__bg');
+    if (heroBg) parallaxTargets.push({ el: heroBg, speed: 0.3 });
+
+    /* Contact CTA background */
+    var ctaBg = document.querySelector('.contact-cta__bg');
+    if (ctaBg) parallaxTargets.push({ el: ctaBg, speed: 0.2 });
+
+    /* Sub-hero backgrounds */
+    var subHeroBgs = document.querySelectorAll('.sub-hero__bg');
+    subHeroBgs.forEach(function (bg) {
+      parallaxTargets.push({ el: bg, speed: 0.25 });
+    });
+
+    if (!parallaxTargets.length) return;
+
+    var ticking = false;
+
+    function updateParallax() {
+      var scrollY = window.scrollY;
+      var windowH = window.innerHeight;
+
+      parallaxTargets.forEach(function (item) {
+        var rect = item.el.parentElement.getBoundingClientRect();
+        /* Only update if in or near viewport */
+        if (rect.bottom > -windowH && rect.top < windowH * 2) {
+          var offset = scrollY * item.speed;
+          item.el.style.transform = 'translate3d(0,' + (-offset * 0.5) + 'px,0)';
+        }
+      });
+
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    /* Initial call */
+    updateParallax();
+  }
+
+  /* ============================================
+     Custom Cursor (desktop only)
+     ============================================ */
+  function initCustomCursor() {
+    /* Only for pointer: fine devices */
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+
+    var cursor = document.querySelector('.custom-cursor');
+    if (!cursor) return;
+
+    document.body.classList.add('cursor-active');
+
+    var cursorX = 0;
+    var cursorY = 0;
+    var currentX = 0;
+    var currentY = 0;
+
+    document.addEventListener('mousemove', function (e) {
+      cursorX = e.clientX;
+      cursorY = e.clientY;
+    }, { passive: true });
+
+    function animateCursor() {
+      /* Smooth follow with lerp */
+      currentX += (cursorX - currentX) * 0.15;
+      currentY += (cursorY - currentY) * 0.15;
+
+      cursor.style.transform = 'translate3d(' + currentX + 'px,' + currentY + 'px,0)';
+
+      requestAnimationFrame(animateCursor);
+    }
+
+    animateCursor();
+
+    /* Hover detection for links and buttons */
+    var hoverTargets = document.querySelectorAll('a, button, .service__item, .contact-cta__btn');
+
+    hoverTargets.forEach(function (target) {
+      target.addEventListener('mouseenter', function () {
+        cursor.classList.add('is-hover');
+      });
+      target.addEventListener('mouseleave', function () {
+        cursor.classList.remove('is-hover');
+      });
+    });
+  }
+
+  /* ============================================
+     Magnetic Buttons
+     ============================================ */
+  function initMagneticButtons() {
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+
+    var btns = document.querySelectorAll('.contact-cta__btn, .site-header__cta, .contact-form__submit');
+
+    btns.forEach(function (btn) {
+      btn.classList.add('magnetic-btn');
+
+      btn.addEventListener('mousemove', function (e) {
+        var rect = btn.getBoundingClientRect();
+        var x = e.clientX - rect.left - rect.width / 2;
+        var y = e.clientY - rect.top - rect.height / 2;
+        /* Subtle magnetic pull */
+        btn.style.transform = 'translate(' + (x * 0.15) + 'px,' + (y * 0.15) + 'px)';
+      });
+
+      btn.addEventListener('mouseleave', function () {
+        btn.style.transform = '';
+      });
+    });
+  }
+
+  /* ============================================
+     Privacy Policy Modal
+     ============================================ */
   var modalOverlay = document.querySelector('.modal-overlay');
   var modalOpen = document.querySelector('[data-modal-open]');
   var modalClose = document.querySelector('[data-modal-close]');
@@ -170,7 +337,9 @@
     }
   });
 
-  /* ---- Smooth scroll for anchor links ---- */
+  /* ============================================
+     Smooth scroll for anchor links
+     ============================================ */
   document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
       var targetId = this.getAttribute('href');
@@ -186,7 +355,7 @@
   });
 
   /* ============================================
-     Supabase: Top Page News (3件)
+     Supabase: Top Page News (3 items)
      ============================================ */
   function loadTopNews() {
     var newsList = document.getElementById('news-list');
@@ -219,7 +388,7 @@
   }
 
   /* ============================================
-     Supabase: News Page (全件 + フィルター)
+     Supabase: News Page (all + filter)
      ============================================ */
   var allNewsData = [];
 
@@ -247,7 +416,7 @@
     if (!newsPageList) return;
 
     var html = '';
-    items.forEach(function (item, i) {
+    items.forEach(function (item) {
       var tagClass = 'news__tag--' + (item.category || 'notice').toLowerCase();
       var tagLabel = item.category || 'Notice';
       tagLabel = tagLabel.charAt(0).toUpperCase() + tagLabel.slice(1);
@@ -297,8 +466,8 @@
   /* ---- Accordion ---- */
   function initAccordions() {
     var headers = document.querySelectorAll('.news-accordion__header');
-    headers.forEach(function (header) {
-      header.addEventListener('click', function () {
+    headers.forEach(function (hdr) {
+      hdr.addEventListener('click', function () {
         var accordion = this.closest('.news-accordion');
         var isOpen = accordion.classList.contains('is-open');
 
@@ -401,7 +570,7 @@
       }).catch(function (err) {
         console.error('Contact submit error:', err);
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Send Message →';
+        submitBtn.textContent = 'Send Message \u2192';
         alert('送信に失敗しました。しばらく経ってからもう一度お試しください。');
       });
     });

@@ -19,6 +19,15 @@
 </head>
 <body class="page-enter">
 
+  <!-- Page Wipe Transition -->
+  <div class="page-wipe" aria-hidden="true"></div>
+
+  <!-- Custom Cursor (desktop only) -->
+  <div class="custom-cursor" aria-hidden="true">
+    <div class="custom-cursor__dot"></div>
+    <div class="custom-cursor__label">View</div>
+  </div>
+
   <!-- ========== Header ========== -->
   <header class="site-header">
     <div class="container">
@@ -227,6 +236,7 @@
 
   <!-- ========== Footer ========== -->
   <footer class="site-footer">
+    <div class="site-footer__watermark" aria-hidden="true">ARCUS</div>
     <svg class="site-footer__arch" viewBox="0 0 160 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M10 80 L10 40 Q10 10 80 10 Q150 10 150 40 L150 80" stroke="#ffffff" stroke-width="1.5" fill="none"/>
     </svg>
