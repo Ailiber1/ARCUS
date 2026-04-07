@@ -91,33 +91,33 @@
     </div>
   </div>
 
-  <!-- ========== Numbers ========== -->
+  <!-- ========== Numbers — Bento Grid ========== -->
   <section class="numbers" id="numbers">
     <div class="container">
       <div class="section-title fade-up" data-scroll-fade>
         <span class="section-title__en">Numbers</span>
         <span class="section-title__ja">数字で見るARCUS</span>
       </div>
-      <div class="numbers__grid">
-        <div class="numbers__item fade-up" data-label="180+">
+      <div class="bento-grid">
+        <div class="bento-card bento-card--large fade-up">
           <div class="numbers__value">
             <span data-count="180" data-suffix="+">0</span>
           </div>
           <div class="numbers__label">支援企業数</div>
         </div>
-        <div class="numbers__item fade-up" data-label="98.5%">
+        <div class="bento-card bento-card--small fade-up">
           <div class="numbers__value">
             <span data-count="98.5" data-suffix="%">0</span>
           </div>
           <div class="numbers__label">顧客継続率</div>
         </div>
-        <div class="numbers__item fade-up" data-label="35%">
+        <div class="bento-card bento-card--small fade-up">
           <div class="numbers__value">
             <span data-count="35" data-suffix="%">0</span>
           </div>
           <div class="numbers__label">平均コスト削減率</div>
         </div>
-        <div class="numbers__item fade-up" data-label="92%">
+        <div class="bento-card bento-card--wide fade-up">
           <div class="numbers__value">
             <span data-count="92" data-suffix="%">0</span>
           </div>
@@ -127,43 +127,45 @@
     </div>
   </section>
 
-  <!-- ========== Service — Sticky Cards ========== -->
-  <section class="service-sticky" id="service">
-    <div class="container service-sticky__inner">
-      <!-- Left: Sticky title -->
-      <div class="service-sticky__left">
-        <div class="section-title" data-scroll-fade>
-          <span class="section-title__en">Service</span>
-          <span class="section-title__ja">事業内容</span>
-        </div>
+  <!-- ========== Service — Editorial Full-bleed ========== -->
+  <section class="service-editorial" id="service">
+    <div class="container">
+      <div class="section-title fade-up" data-scroll-fade>
+        <span class="section-title__en">Service</span>
+        <span class="section-title__ja">事業内容</span>
       </div>
-      <!-- Right: Scrolling cards -->
-      <div class="service-sticky__right">
-        <div class="service-sticky__card" data-index="0">
-          <div class="service-sticky__number">01</div>
-          <div class="service-sticky__img img-reveal">
-            <img src="images/service-dx.jpg" alt="DXコンサルティング" width="600" height="450" loading="lazy">
-          </div>
-          <h3 class="service-sticky__name">DX Consulting</h3>
-          <p class="service-sticky__desc">業務フローの可視化から最適なデジタルツールの選定・導入まで、御社の規模に合ったDX戦略を設計します。</p>
+    </div>
+    <div class="editorial-blocks">
+      <div class="editorial-block fade-up">
+        <div class="editorial-block__image img-reveal">
+          <img src="images/service-dx.jpg" alt="DXコンサルティング" width="600" height="450" loading="lazy">
+        </div>
+        <div class="editorial-block__content">
+          <span class="editorial-block__num">01</span>
+          <h3 class="editorial-block__name">DX Consulting</h3>
+          <p class="editorial-block__desc">業務フローの可視化から最適なデジタルツールの選定・導入まで、御社の規模に合ったDX戦略を設計します。</p>
           <a href="services.html#dx-strategy" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
         </div>
-        <div class="service-sticky__card" data-index="1">
-          <div class="service-sticky__number">02</div>
-          <div class="service-sticky__img img-reveal">
-            <img src="images/service-dev.jpg" alt="システム開発" width="600" height="450" loading="lazy">
-          </div>
-          <h3 class="service-sticky__name">System Development</h3>
-          <p class="service-sticky__desc">業務システム、Webアプリケーション、API連携まで。使い続けられるシステムを、適正な価格で。</p>
+      </div>
+      <div class="editorial-block fade-up">
+        <div class="editorial-block__image img-reveal">
+          <img src="images/service-dev.jpg" alt="システム開発" width="600" height="450" loading="lazy">
+        </div>
+        <div class="editorial-block__content">
+          <span class="editorial-block__num">02</span>
+          <h3 class="editorial-block__name">System Development</h3>
+          <p class="editorial-block__desc">業務システム、Webアプリケーション、API連携まで。使い続けられるシステムを、適正な価格で。</p>
           <a href="services.html#development" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
         </div>
-        <div class="service-sticky__card" data-index="2">
-          <div class="service-sticky__number">03</div>
-          <div class="service-sticky__img img-reveal">
-            <img src="images/service-support.jpg" alt="IT運用サポート" width="600" height="450" loading="lazy">
-          </div>
-          <h3 class="service-sticky__name">IT Support</h3>
-          <p class="service-sticky__desc">専任の情シス担当がいなくても安心。月額固定でヘルプデスクからインフラ管理まで対応します。</p>
+      </div>
+      <div class="editorial-block fade-up">
+        <div class="editorial-block__image img-reveal">
+          <img src="images/service-support.jpg" alt="IT運用サポート" width="600" height="450" loading="lazy">
+        </div>
+        <div class="editorial-block__content">
+          <span class="editorial-block__num">03</span>
+          <h3 class="editorial-block__name">IT Support</h3>
+          <p class="editorial-block__desc">専任の情シス担当がいなくても安心。月額固定でヘルプデスクからインフラ管理まで対応します。</p>
           <a href="services.html#it-advisory" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
@@ -179,46 +181,48 @@
     </div>
   </div>
 
-  <!-- ========== Why ARCUS — Horizontal Scroll ========== -->
-  <section class="why-hscroll" id="about">
-    <div class="why-hscroll__sticky">
-      <div class="container">
-        <div class="section-title fade-up" data-scroll-fade>
-          <span class="section-title__en">Why ARCUS</span>
-          <span class="section-title__ja">選ばれる理由</span>
-        </div>
+  <!-- ========== Why ARCUS — Offset Cards ========== -->
+  <section class="why-offset" id="about">
+    <div class="container">
+      <div class="section-title fade-up" data-scroll-fade>
+        <span class="section-title__en">Why ARCUS</span>
+        <span class="section-title__ja">選ばれる理由</span>
       </div>
-      <div class="why-hscroll__track">
-        <div class="why-hscroll__card fade-up">
-          <div class="why-hscroll__num">01</div>
-          <h3 class="why-hscroll__title">中小企業専門</h3>
-          <p class="why-hscroll__desc">御社の規模に合った最適解を。大企業向けの過剰な提案はしません。身の丈に合った投資で、最大の効果を。</p>
+      <div class="offset-cards">
+        <div class="offset-card fade-up">
+          <div class="offset-card__num">01</div>
+          <h3 class="offset-card__title">中小企業専門</h3>
+          <p class="offset-card__desc">御社の規模に合った最適解を。大企業向けの過剰な提案はしません。身の丈に合った投資で、最大の効果を。</p>
         </div>
-        <div class="why-hscroll__card fade-up">
-          <div class="why-hscroll__num">02</div>
-          <h3 class="why-hscroll__title">伴走型支援</h3>
-          <p class="why-hscroll__desc">導入して終わりではない。定着するまで並走します。社内にノウハウが残る支援を目指します。</p>
+        <div class="offset-card fade-up">
+          <div class="offset-card__num">02</div>
+          <h3 class="offset-card__title">伴走型支援</h3>
+          <p class="offset-card__desc">導入して終わりではない。定着するまで並走します。社内にノウハウが残る支援を目指します。</p>
         </div>
-        <div class="why-hscroll__card fade-up">
-          <div class="why-hscroll__num">03</div>
-          <h3 class="why-hscroll__title">透明な料金</h3>
-          <p class="why-hscroll__desc">見積もりの内訳をすべて公開。追加費用なし。安心して長期のパートナーシップを。</p>
+        <div class="offset-card fade-up">
+          <div class="offset-card__num">03</div>
+          <h3 class="offset-card__title">透明な料金</h3>
+          <p class="offset-card__desc">見積もりの内訳をすべて公開。追加費用なし。安心して長期のパートナーシップを。</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ========== News ========== -->
+  <!-- ========== News — Editorial 2-column ========== -->
   <section class="news" id="news">
     <div class="container">
-      <div class="section-title fade-up" data-scroll-fade>
-        <span class="section-title__en">News</span>
-        <span class="section-title__ja">お知らせ</span>
+      <div class="news-editorial">
+        <div class="news-editorial__title" data-scroll-fade>
+          <span class="section-title__en">News</span>
+          <span class="section-title__ja">お知らせ</span>
+        </div>
+        <div class="news-editorial__right">
+          <div class="news__list fade-up" id="news-list">
+            <!-- Supabaseから動的に読み込み -->
+          </div>
+          <a href="news.html" class="news__more fade-up">View All <span aria-hidden="true">&rarr;</span></a>
+        </div>
       </div>
-      <div class="news__list fade-up" id="news-list">
-        <!-- Firebase Realtime DBから動的に読み込み -->
-      </div>
-      <a href="news.html" class="news__more fade-up">View All <span aria-hidden="true">&rarr;</span></a>
     </div>
   </section>
 

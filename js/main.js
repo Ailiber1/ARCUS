@@ -30,7 +30,6 @@
     initCustomCursor();
     initParallax();
     initMagneticButtons();
-    initHorizontalScroll();
     initHeroTitleAnimation();
     initHeroScrollScaling();
     initHeroMouseParallax();
@@ -38,7 +37,7 @@
     initCharAnimate();
     initScrollProgress();
     initNumbersReveal();
-    initServiceCardReveal();
+    initEditorialBlockReveal();
     initNewsItemReveal();
     initScrollExperience();
   });
@@ -230,64 +229,6 @@
   }
 
   /* ============================================
-     Horizontal Scroll — Why ARCUS (desktop only)
-     ============================================ */
-  function initHorizontalScroll() {
-    var section = document.querySelector('.why-hscroll');
-    if (!section) return;
-
-    /* Only on desktop */
-    if (window.innerWidth < 1024) return;
-
-    var sticky = section.querySelector('.why-hscroll__sticky');
-    var track = section.querySelector('.why-hscroll__track');
-    if (!sticky || !track) return;
-
-    var ticking = false;
-
-    function updateHScroll() {
-      var sectionRect = section.getBoundingClientRect();
-      var sectionHeight = section.offsetHeight;
-      var windowH = window.innerHeight;
-
-      /* How far we've scrolled into the section (0 to sectionHeight - windowH) */
-      var scrollIntoSection = -sectionRect.top;
-      var maxScroll = sectionHeight - windowH;
-
-      if (scrollIntoSection < 0) scrollIntoSection = 0;
-      if (scrollIntoSection > maxScroll) scrollIntoSection = maxScroll;
-
-      var progress = maxScroll > 0 ? scrollIntoSection / maxScroll : 0;
-
-      /* Calculate how far to move the track */
-      var trackWidth = track.scrollWidth;
-      var viewportWidth = sticky.offsetWidth;
-      var maxTranslate = trackWidth - viewportWidth + 80; /* 80px padding */
-
-      var translateX = -progress * maxTranslate;
-      track.style.transform = 'translate3d(' + translateX + 'px, 0, 0)';
-
-      ticking = false;
-    }
-
-    window.addEventListener('scroll', function () {
-      if (!ticking) {
-        requestAnimationFrame(updateHScroll);
-        ticking = true;
-      }
-    }, { passive: true });
-
-    updateHScroll();
-
-    /* Re-check on resize */
-    window.addEventListener('resize', function () {
-      if (window.innerWidth < 1024) {
-        track.style.transform = '';
-      }
-    });
-  }
-
-  /* ============================================
      Custom Cursor (desktop only)
      ============================================ */
   function initCustomCursor() {
@@ -322,7 +263,7 @@
     animateCursor();
 
     /* Hover detection for links and buttons */
-    var hoverTargets = document.querySelectorAll('a, button, .service-sticky__card, .why-hscroll__card, .contact-cta__btn');
+    var hoverTargets = document.querySelectorAll('a, button, .editorial-block, .offset-card, .contact-cta__btn');
 
     hoverTargets.forEach(function (target) {
       target.addEventListener('mouseenter', function () {
@@ -889,29 +830,26 @@
   }
 
   /* ============================================
-     Service Cards — Slide-in from right with stagger
+     Editorial Blocks — Fade-in reveal
      ============================================ */
-  function initServiceCardReveal() {
-    var cards = document.querySelectorAll('.service-sticky__card');
-    if (!cards.length) return;
+  function initEditorialBlockReveal() {
+    var blocks = document.querySelectorAll('.editorial-block');
+    if (!blocks.length) return;
 
-    var cardObserver = new IntersectionObserver(
+    var blockObserver = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            var idx = parseInt(entry.target.getAttribute('data-index') || '0', 10);
-            setTimeout(function () {
-              entry.target.classList.add('is-visible');
-            }, idx * 150);
-            cardObserver.unobserve(entry.target);
+            entry.target.classList.add('is-visible');
+            blockObserver.unobserve(entry.target);
           }
         });
       },
       { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
     );
 
-    cards.forEach(function (card) {
-      cardObserver.observe(card);
+    blocks.forEach(function (block) {
+      blockObserver.observe(block);
     });
   }
 
@@ -968,8 +906,8 @@
     var bgSections = [
       { sel: '.hero',           color: '#ffffff' },
       { sel: '.numbers',        color: '#f0f9ff' },
-      { sel: '.service-sticky', color: '#ffffff' },
-      { sel: '.why-hscroll',    color: '#f1f5f9' },
+      { sel: '.service-editorial', color: '#ffffff' },
+      { sel: '.why-offset',       color: '#f1f5f9' },
       { sel: '.news',           color: '#ffffff' },
       { sel: '.contact-cta',    color: '#dbeafe' }
     ];
@@ -997,32 +935,32 @@
 
     /* ---- 2. Scroll-linked counters (delegated to updateScrollCounters) ---- */
 
-    /* ---- 3. Service card parallax ---- */
-    var serviceCards = document.querySelectorAll('.service-sticky__card');
+    /* ---- 3. Editorial block parallax ---- */
+    var editorialBlocks = document.querySelectorAll('.editorial-block');
 
     function updateServiceParallax() {
-      if (!serviceCards.length) return;
+      if (!editorialBlocks.length) return;
 
-      serviceCards.forEach(function (card) {
-        var rect = card.getBoundingClientRect();
+      editorialBlocks.forEach(function (block) {
+        var rect = block.getBoundingClientRect();
         var windowH = window.innerHeight;
 
-        /* Only process cards near viewport */
+        /* Only process blocks near viewport */
         if (rect.bottom < -100 || rect.top > windowH + 100) return;
 
         /* scrollDelta: distance from center of viewport */
-        var cardCenter = rect.top + rect.height / 2;
+        var blockCenter = rect.top + rect.height / 2;
         var viewCenter = windowH / 2;
-        var delta = cardCenter - viewCenter;
+        var delta = blockCenter - viewCenter;
 
-        var numEl = card.querySelector('.service-sticky__number');
-        var imgEl = card.querySelector('.service-sticky__img');
+        var numEl = block.querySelector('.editorial-block__num');
+        var imgEl = block.querySelector('.editorial-block__image');
 
         if (numEl) {
-          numEl.style.transform = 'translateY(' + (delta * 0.3) + 'px)';
+          numEl.style.transform = 'translateY(' + (delta * 0.15) + 'px)';
         }
-        if (imgEl) {
-          imgEl.style.transform = 'translateY(' + (delta * 0.15) + 'px)';
+        if (imgEl && window.innerWidth >= 768) {
+          imgEl.style.transform = 'translateY(' + (delta * 0.08) + 'px)';
         }
       });
     }
