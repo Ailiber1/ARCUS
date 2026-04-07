@@ -1,7 +1,6 @@
 /* ============================================
    ARCUS Corporate Site — main.js
-   Full Redesign: Parallax, Custom Cursor,
-   Magnetic Buttons, Split Reveal, Stagger
+   Art Redesign: Architectural Minimalism
    ============================================ */
 
 (function () {
@@ -31,6 +30,7 @@
     initCustomCursor();
     initParallax();
     initMagneticButtons();
+    initHorizontalScroll();
   });
 
   /* ============================================
@@ -178,14 +178,10 @@
   });
 
   /* ============================================
-     Parallax effect (hero bg, contact-cta bg, sub-hero bg)
+     Parallax effect (sub-hero bg, contact-cta bg)
      ============================================ */
   function initParallax() {
     var parallaxTargets = [];
-
-    /* Hero background */
-    var heroBg = document.querySelector('.hero__bg');
-    if (heroBg) parallaxTargets.push({ el: heroBg, speed: 0.3 });
 
     /* Contact CTA background */
     var ctaBg = document.querySelector('.contact-cta__bg');
@@ -229,6 +225,64 @@
   }
 
   /* ============================================
+     Horizontal Scroll — Why ARCUS (desktop only)
+     ============================================ */
+  function initHorizontalScroll() {
+    var section = document.querySelector('.why-hscroll');
+    if (!section) return;
+
+    /* Only on desktop */
+    if (window.innerWidth < 1024) return;
+
+    var sticky = section.querySelector('.why-hscroll__sticky');
+    var track = section.querySelector('.why-hscroll__track');
+    if (!sticky || !track) return;
+
+    var ticking = false;
+
+    function updateHScroll() {
+      var sectionRect = section.getBoundingClientRect();
+      var sectionHeight = section.offsetHeight;
+      var windowH = window.innerHeight;
+
+      /* How far we've scrolled into the section (0 to sectionHeight - windowH) */
+      var scrollIntoSection = -sectionRect.top;
+      var maxScroll = sectionHeight - windowH;
+
+      if (scrollIntoSection < 0) scrollIntoSection = 0;
+      if (scrollIntoSection > maxScroll) scrollIntoSection = maxScroll;
+
+      var progress = maxScroll > 0 ? scrollIntoSection / maxScroll : 0;
+
+      /* Calculate how far to move the track */
+      var trackWidth = track.scrollWidth;
+      var viewportWidth = sticky.offsetWidth;
+      var maxTranslate = trackWidth - viewportWidth + 80; /* 80px padding */
+
+      var translateX = -progress * maxTranslate;
+      track.style.transform = 'translate3d(' + translateX + 'px, 0, 0)';
+
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        requestAnimationFrame(updateHScroll);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    updateHScroll();
+
+    /* Re-check on resize */
+    window.addEventListener('resize', function () {
+      if (window.innerWidth < 1024) {
+        track.style.transform = '';
+      }
+    });
+  }
+
+  /* ============================================
      Custom Cursor (desktop only)
      ============================================ */
   function initCustomCursor() {
@@ -263,7 +317,7 @@
     animateCursor();
 
     /* Hover detection for links and buttons */
-    var hoverTargets = document.querySelectorAll('a, button, .service__item, .contact-cta__btn');
+    var hoverTargets = document.querySelectorAll('a, button, .service-sticky__card, .why-hscroll__card, .contact-cta__btn');
 
     hoverTargets.forEach(function (target) {
       target.addEventListener('mouseenter', function () {

@@ -55,32 +55,16 @@
     <a href="contact.html" class="mobile-nav__cta">Contact</a>
   </nav>
 
-  <!-- ========== Hero ========== -->
+  <!-- ========== Hero — Text Mask ========== -->
   <section class="hero">
     <div class="hero__bg">
       <img src="images/hero.jpg" alt="" width="1920" height="1080" loading="eager">
-      <div class="hero__overlay"></div>
     </div>
 
-    <!-- Arch SVG -->
-    <svg class="hero__arch" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs>
-        <linearGradient id="archGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#2563eb"/>
-          <stop offset="100%" stop-color="#60a5fa"/>
-        </linearGradient>
-      </defs>
-      <path d="M50 500 L50 200 Q50 50 200 50 Q350 50 350 200 L350 500" stroke="url(#archGrad)" stroke-width="3" fill="none"/>
-      <path d="M100 500 L100 220 Q100 100 200 100 Q300 100 300 220 L300 500" stroke="url(#archGrad)" stroke-width="2" fill="none" opacity="0.5"/>
-    </svg>
-
-    <div class="container hero__content">
-      <h1 class="hero__copy">
-        <span class="hero__line reveal-line"><span class="reveal-line__inner">Bridging</span></span>
-        <span class="hero__line reveal-line"><span class="reveal-line__inner">Business</span></span>
-        <span class="hero__line reveal-line"><span class="reveal-line__inner">to the Future.</span></span>
-      </h1>
-      <p class="hero__sub reveal-line"><span class="reveal-line__inner">テクノロジーで、働く人を自由にする。</span></p>
+    <div class="hero__content">
+      <h1 class="hero__mask-title">ARCUS</h1>
+      <p class="hero__tagline-en reveal-line"><span class="reveal-line__inner">Bridging Business to the Future.</span></p>
+      <p class="hero__tagline-ja reveal-line"><span class="reveal-line__inner">テクノロジーで、働く人を自由にする。</span></p>
     </div>
 
     <div class="hero__scroll">
@@ -88,6 +72,15 @@
       <div class="hero__scroll-line"></div>
     </div>
   </section>
+
+  <!-- ========== Marquee 1 ========== -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span class="marquee__text">BRIDGING BUSINESS TO THE FUTURE &mdash; ARCUS &mdash; DX CONSULTING &mdash; SYSTEM DEVELOPMENT &mdash; IT ADVISORY &mdash;&nbsp;</span>
+      <span class="marquee__text">BRIDGING BUSINESS TO THE FUTURE &mdash; ARCUS &mdash; DX CONSULTING &mdash; SYSTEM DEVELOPMENT &mdash; IT ADVISORY &mdash;&nbsp;</span>
+      <span class="marquee__text">BRIDGING BUSINESS TO THE FUTURE &mdash; ARCUS &mdash; DX CONSULTING &mdash; SYSTEM DEVELOPMENT &mdash; IT ADVISORY &mdash;&nbsp;</span>
+    </div>
+  </div>
 
   <!-- ========== Numbers ========== -->
   <section class="numbers" id="numbers">
@@ -125,91 +118,83 @@
     </div>
   </section>
 
-  <!-- ========== Service ========== -->
-  <section class="service" id="service">
-    <div class="container">
-      <div class="section-title fade-up">
-        <span class="section-title__en">Service</span>
-        <span class="section-title__ja">事業内容</span>
+  <!-- ========== Service — Sticky Cards ========== -->
+  <section class="service-sticky" id="service">
+    <div class="container service-sticky__inner">
+      <!-- Left: Sticky title -->
+      <div class="service-sticky__left">
+        <div class="section-title">
+          <span class="section-title__en">Service</span>
+          <span class="section-title__ja">事業内容</span>
+        </div>
       </div>
-      <div class="service__list">
-
-        <!-- Service 01 -->
-        <div class="service__item fade-up" data-stagger="0">
-          <div class="service__image">
-            <div class="service__number">01</div>
-            <img src="images/service-dx.jpg" alt="DXコンサルティングのイメージ" width="600" height="450" loading="lazy">
+      <!-- Right: Scrolling cards -->
+      <div class="service-sticky__right">
+        <div class="service-sticky__card" data-index="0">
+          <div class="service-sticky__number">01</div>
+          <div class="service-sticky__img">
+            <img src="images/service-dx.jpg" alt="DXコンサルティング" width="600" height="450" loading="lazy">
           </div>
-          <div class="service__body">
-            <h3 class="service__name">DX Consulting</h3>
-            <p class="service__desc">業務フローの可視化から最適なデジタルツールの選定・導入まで、御社の規模に合ったDX戦略を設計します。</p>
-            <a href="services.html#dx-strategy" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
-          </div>
+          <h3 class="service-sticky__name">DX Consulting</h3>
+          <p class="service-sticky__desc">業務フローの可視化から最適なデジタルツールの選定・導入まで、御社の規模に合ったDX戦略を設計します。</p>
+          <a href="services.html#dx-strategy" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
         </div>
-
-        <!-- Service 02 -->
-        <div class="service__item fade-up" data-stagger="1">
-          <div class="service__image">
-            <div class="service__number">02</div>
-            <img src="images/service-dev.jpg" alt="システム開発のイメージ" width="600" height="450" loading="lazy">
+        <div class="service-sticky__card" data-index="1">
+          <div class="service-sticky__number">02</div>
+          <div class="service-sticky__img">
+            <img src="images/service-dev.jpg" alt="システム開発" width="600" height="450" loading="lazy">
           </div>
-          <div class="service__body">
-            <h3 class="service__name">System Development</h3>
-            <p class="service__desc">業務システム、Webアプリケーション、API連携まで。使い続けられるシステムを、適正な価格で。</p>
-            <a href="services.html#development" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
-          </div>
+          <h3 class="service-sticky__name">System Development</h3>
+          <p class="service-sticky__desc">業務システム、Webアプリケーション、API連携まで。使い続けられるシステムを、適正な価格で。</p>
+          <a href="services.html#development" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
         </div>
-
-        <!-- Service 03 -->
-        <div class="service__item fade-up" data-stagger="2">
-          <div class="service__image">
-            <div class="service__number">03</div>
-            <img src="images/service-support.jpg" alt="IT運用サポートのイメージ" width="600" height="450" loading="lazy">
+        <div class="service-sticky__card" data-index="2">
+          <div class="service-sticky__number">03</div>
+          <div class="service-sticky__img">
+            <img src="images/service-support.jpg" alt="IT運用サポート" width="600" height="450" loading="lazy">
           </div>
-          <div class="service__body">
-            <h3 class="service__name">IT Support</h3>
-            <p class="service__desc">専任の情シス担当がいなくても安心。月額固定でヘルプデスクからインフラ管理まで対応します。</p>
-            <a href="services.html#it-advisory" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
-          </div>
+          <h3 class="service-sticky__name">IT Support</h3>
+          <p class="service-sticky__desc">専任の情シス担当がいなくても安心。月額固定でヘルプデスクからインフラ管理まで対応します。</p>
+          <a href="services.html#it-advisory" class="service__link">View More <span aria-hidden="true">&rarr;</span></a>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- ========== Why ARCUS ========== -->
-  <section class="why" id="about">
-    <div class="container">
-      <div class="section-title fade-up">
-        <span class="section-title__en">Why ARCUS</span>
-        <span class="section-title__ja">選ばれる理由</span>
+  <!-- ========== Marquee 2 ========== -->
+  <div class="marquee marquee--reverse" aria-hidden="true">
+    <div class="marquee__track">
+      <span class="marquee__text">BRIDGING BUSINESS TO THE FUTURE &mdash; ARCUS &mdash; DX CONSULTING &mdash; SYSTEM DEVELOPMENT &mdash; IT ADVISORY &mdash;&nbsp;</span>
+      <span class="marquee__text">BRIDGING BUSINESS TO THE FUTURE &mdash; ARCUS &mdash; DX CONSULTING &mdash; SYSTEM DEVELOPMENT &mdash; IT ADVISORY &mdash;&nbsp;</span>
+      <span class="marquee__text">BRIDGING BUSINESS TO THE FUTURE &mdash; ARCUS &mdash; DX CONSULTING &mdash; SYSTEM DEVELOPMENT &mdash; IT ADVISORY &mdash;&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- ========== Why ARCUS — Horizontal Scroll ========== -->
+  <section class="why-hscroll" id="about">
+    <div class="why-hscroll__sticky">
+      <div class="container">
+        <div class="section-title fade-up">
+          <span class="section-title__en">Why ARCUS</span>
+          <span class="section-title__ja">選ばれる理由</span>
+        </div>
       </div>
-      <div class="why__list">
-
-        <div class="why__item fade-up" data-stagger="0">
-          <div class="why__item-number">01</div>
-          <div class="why__item-body">
-            <h3 class="why__item-title">中小企業専門</h3>
-            <p class="why__item-desc">御社の規模に合った最適解を。大企業向けの過剰な提案はしません。</p>
-          </div>
+      <div class="why-hscroll__track">
+        <div class="why-hscroll__card fade-up">
+          <div class="why-hscroll__num">01</div>
+          <h3 class="why-hscroll__title">中小企業専門</h3>
+          <p class="why-hscroll__desc">御社の規模に合った最適解を。大企業向けの過剰な提案はしません。身の丈に合った投資で、最大の効果を。</p>
         </div>
-
-        <div class="why__item fade-up" data-stagger="1">
-          <div class="why__item-number">02</div>
-          <div class="why__item-body">
-            <h3 class="why__item-title">伴走型支援</h3>
-            <p class="why__item-desc">導入して終わりではない。定着するまで並走します。</p>
-          </div>
+        <div class="why-hscroll__card fade-up">
+          <div class="why-hscroll__num">02</div>
+          <h3 class="why-hscroll__title">伴走型支援</h3>
+          <p class="why-hscroll__desc">導入して終わりではない。定着するまで並走します。社内にノウハウが残る支援を目指します。</p>
         </div>
-
-        <div class="why__item fade-up" data-stagger="2">
-          <div class="why__item-number">03</div>
-          <div class="why__item-body">
-            <h3 class="why__item-title">透明な料金</h3>
-            <p class="why__item-desc">見積もりの内訳をすべて公開。追加費用なし。</p>
-          </div>
+        <div class="why-hscroll__card fade-up">
+          <div class="why-hscroll__num">03</div>
+          <h3 class="why-hscroll__title">透明な料金</h3>
+          <p class="why-hscroll__desc">見積もりの内訳をすべて公開。追加費用なし。安心して長期のパートナーシップを。</p>
         </div>
-
       </div>
     </div>
   </section>

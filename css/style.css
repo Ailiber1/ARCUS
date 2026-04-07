@@ -1,6 +1,6 @@
 /* ============================================
    ARCUS Corporate Site — style.css
-   Full Redesign: Designer-grade, zero template feel
+   Art Redesign: Architectural Minimalism
    Mobile-first (375px → 768px → 1024px → 1280px)
    ============================================ */
 
@@ -18,8 +18,8 @@
   --font-heading: 'Space Grotesk', sans-serif;
   --font-body: 'Noto Sans JP', sans-serif;
   --font-mono: 'Space Grotesk', monospace;
-  --font-size-hero: clamp(60px, 12vw, 160px);
-  --font-size-section: clamp(60px, 8vw, 120px);
+  --font-size-hero: clamp(100px, 20vw, 300px);
+  --font-size-section: clamp(60px, 10vw, 140px);
   --font-size-h2: clamp(28px, 4vw, 48px);
   --font-size-body: 1rem;
   --space-section: clamp(100px, 12vw, 200px);
@@ -114,16 +114,16 @@ button {
 }
 
 /* ============================================
-   Page Wipe Transition
+   Page Wipe Transition — White curtain slides up
    ============================================ */
 .page-wipe {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: var(--color-primary);
+  background: #ffffff;
   transform: scaleY(1);
-  transform-origin: top;
-  animation: wipeOut 0.8s 0.1s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  transform-origin: bottom;
+  animation: wipeOut 0.9s 0.1s cubic-bezier(0.77, 0, 0.175, 1) forwards;
   pointer-events: none;
 }
 
@@ -133,7 +133,6 @@ button {
   }
   100% {
     transform: scaleY(0);
-    transform-origin: bottom;
   }
 }
 
@@ -239,12 +238,26 @@ button {
 }
 
 /* Stagger for hero lines */
-.hero__line:nth-child(1) .reveal-line__inner { transition-delay: 0.15s; }
-.hero__line:nth-child(2) .reveal-line__inner { transition-delay: 0.3s; }
-.hero__line:nth-child(3) .reveal-line__inner { transition-delay: 0.45s; }
-.hero__sub .reveal-line__inner { transition-delay: 0.65s; }
+.hero__tagline-en .reveal-line__inner { transition-delay: 0.8s; }
+.hero__tagline-ja .reveal-line__inner { transition-delay: 1.0s; }
 
-/* Section title pattern */
+/* Reveal wrap for section titles */
+.reveal-wrap {
+  overflow: hidden;
+  display: block;
+}
+
+.reveal-text {
+  display: block;
+  transform: translateY(100%);
+  transition: transform 0.9s var(--ease-out-expo);
+}
+
+.is-visible .reveal-text {
+  transform: translateY(0);
+}
+
+/* Section title pattern — extreme size contrast */
 .section-title {
   margin-bottom: var(--space-element);
 }
@@ -253,19 +266,24 @@ button {
   font-family: var(--font-heading);
   font-size: var(--font-size-section);
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 1.0;
   letter-spacing: -0.04em;
   color: var(--color-text);
+  background: linear-gradient(135deg, var(--color-text) 0%, #475569 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .section-title__ja {
   display: block;
   margin-top: 8px;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--color-text-sub);
-  letter-spacing: 0.15em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }
 
 /* ============================================
@@ -461,7 +479,7 @@ button {
 }
 
 /* ============================================
-   Hero — Ultra large typography + parallax
+   Hero — Text Mask with background-clip
    ============================================ */
 .hero {
   position: relative;
@@ -469,16 +487,17 @@ button {
   min-height: 100dvh;
   display: flex;
   align-items: center;
+  justify-content: center;
   overflow: hidden;
-  padding-top: 80px;
+  background: var(--color-bg);
 }
 
 .hero__bg {
   position: absolute;
-  inset: -20% 0 0 0;
+  inset: 0;
   z-index: 0;
-  will-change: transform;
-  height: 120%;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .hero__bg img {
@@ -487,60 +506,59 @@ button {
   object-fit: cover;
 }
 
-.hero__overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.6) 0%,
-    rgba(248, 250, 252, 0.5) 50%,
-    rgba(219, 234, 254, 0.35) 100%
-  );
-}
-
-.hero__arch {
-  position: absolute;
-  right: -5%;
-  top: 10%;
-  width: 50vw;
-  height: 60vh;
-  opacity: 0.06;
-  z-index: 1;
-}
-
-@media (min-width: 768px) {
-  .hero__arch {
-    right: 2%;
-    width: 40vw;
-    opacity: 0.08;
-  }
-}
-
 .hero__content {
   position: relative;
   z-index: 2;
+  text-align: center;
+  padding: 0 20px;
 }
 
-.hero__copy {
+.hero__mask-title {
   font-family: var(--font-heading);
   font-size: var(--font-size-hero);
   font-weight: 700;
-  line-height: 1.02;
-  letter-spacing: -0.05em;
-  color: var(--color-text);
+  line-height: 1.0;
+  letter-spacing: -0.04em;
+  background-image: url('../images/hero.jpg');
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 24px;
+  animation: heroZoomIn 1.2s ease-out forwards;
+  transform: scale(1.5);
+  opacity: 0;
 }
 
-.hero__line {
-  display: block;
+@keyframes heroZoomIn {
+  0% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
-.hero__sub {
+.hero__tagline-en {
+  font-family: var(--font-heading);
+  font-size: clamp(24px, 4vw, 48px);
+  font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+.hero__tagline-ja {
   font-family: var(--font-body);
-  font-size: clamp(16px, 2.5vw, 22px);
+  font-size: clamp(14px, 2vw, 20px);
   font-weight: 300;
   color: var(--color-text-sub);
-  max-width: var(--max-text);
+  letter-spacing: 0.1em;
   line-height: 1.6;
 }
 
@@ -581,6 +599,47 @@ button {
   100% {
     height: 60px;
     opacity: 0;
+  }
+}
+
+/* ============================================
+   Marquee — Flowing text strip
+   ============================================ */
+.marquee {
+  overflow: hidden;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: 16px 0;
+  background: var(--color-bg);
+}
+
+.marquee__track {
+  display: flex;
+  white-space: nowrap;
+  animation: marqueeScroll 30s linear infinite;
+  will-change: transform;
+}
+
+.marquee--reverse .marquee__track {
+  animation-direction: reverse;
+}
+
+.marquee__text {
+  font-family: var(--font-heading);
+  font-size: clamp(14px, 2vw, 20px);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--color-border);
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.333%);
   }
 }
 
@@ -663,91 +722,96 @@ button {
 }
 
 /* ============================================
-   Service — Clip-path image reveal
+   Service Sticky — Sticky title + scrolling cards
    ============================================ */
-.service {
+.service-sticky {
   padding: var(--space-section) 0;
   background: var(--color-bg);
 }
 
-.service__list {
-  margin-top: var(--space-block);
+.service-sticky__inner {
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .service-sticky__inner {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 60px;
+    min-height: 250vh;
+  }
+}
+
+.service-sticky__left {
+  margin-bottom: 48px;
+}
+
+@media (min-width: 1024px) {
+  .service-sticky__left {
+    position: sticky;
+    top: 50%;
+    transform: translateY(-50%);
+    height: fit-content;
+    margin-bottom: 0;
+  }
+}
+
+.service-sticky__right {
   display: flex;
   flex-direction: column;
-  gap: 100px;
+  gap: 80px;
 }
 
-@media (min-width: 768px) {
-  .service__list {
-    gap: 140px;
+@media (min-width: 1024px) {
+  .service-sticky__right {
+    gap: 60vh;
+    padding-top: 20vh;
+    padding-bottom: 20vh;
   }
 }
 
-.service__item {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 32px;
-  align-items: center;
+.service-sticky__card {
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 40px;
+  transition: transform var(--transition), box-shadow var(--transition);
 }
 
-@media (min-width: 768px) {
-  .service__item {
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-  }
-
-  .service__item:nth-child(even) .service__image {
-    order: 2;
-  }
-
-  .service__item:nth-child(even) .service__body {
-    order: 1;
-  }
+.service-sticky__card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
 }
 
-.service__image {
-  position: relative;
+.service-sticky__number {
+  font-family: var(--font-heading);
+  font-size: clamp(64px, 10vw, 120px);
+  font-weight: 700;
+  color: var(--color-border);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin-bottom: 16px;
+}
+
+.service-sticky__img {
   overflow: hidden;
   border-radius: var(--radius);
-  aspect-ratio: 4 / 3;
-  clip-path: inset(5%);
-  transition: clip-path 0.6s var(--ease-out-expo);
+  aspect-ratio: 16 / 9;
+  margin-bottom: 24px;
 }
 
-.service__item:hover .service__image {
-  clip-path: inset(0%);
-}
-
-.service__image img {
+.service-sticky__img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.8s var(--ease-out-expo);
 }
 
-.service__item:hover .service__image img {
-  transform: scale(1.03);
+.service-sticky__card:hover .service-sticky__img img {
+  transform: scale(1.05);
 }
 
-/* Giant semi-transparent number overlay on image */
-.service__number {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: var(--font-heading);
-  font-size: clamp(120px, 18vw, 220px);
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1;
-  letter-spacing: -0.04em;
-  mix-blend-mode: overlay;
-  z-index: 2;
-  pointer-events: none;
-  transition: opacity var(--transition);
-}
-
-.service__name {
+.service-sticky__name {
   font-family: var(--font-heading);
   font-size: clamp(22px, 3vw, 32px);
   font-weight: 600;
@@ -756,7 +820,7 @@ button {
   letter-spacing: -0.01em;
 }
 
-.service__desc {
+.service-sticky__desc {
   font-size: 15px;
   color: var(--color-text-sub);
   line-height: 2.0;
@@ -764,6 +828,7 @@ button {
   margin-bottom: 24px;
 }
 
+/* Service link shared */
 .service__link {
   display: inline-flex;
   align-items: center;
@@ -782,107 +847,108 @@ button {
 }
 
 .service__link:hover {
-  gap: 8px;
+  gap: 14px;
 }
 
 .service__link:hover span {
   transform: translateX(6px);
 }
 
-/* Move number to image overlay on desktop */
-@media (min-width: 768px) {
-  .service__body {
-    position: relative;
-  }
-
-  .service__number {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .service__image .service__number {
-    /* positioned inside image */
-  }
-}
-
 /* ============================================
-   Why ARCUS — Horizontal layout
+   Why ARCUS — Horizontal scroll (desktop)
    ============================================ */
-.why {
+.why-hscroll {
   background: var(--color-bg-alt);
-  padding: var(--space-section) 0;
+  position: relative;
 }
 
-.why__list {
-  margin-top: var(--space-block);
-  display: flex;
-  flex-direction: column;
-}
+/* Mobile: normal vertical stack */
+@media (max-width: 1023px) {
+  .why-hscroll {
+    padding: var(--space-section) 0;
+  }
 
-.why__item {
-  display: flex;
-  align-items: flex-start;
-  gap: 24px;
-  padding: 36px 0;
-  border-bottom: 1px solid var(--color-accent);
-  border-bottom-width: 1px;
-  border-image: linear-gradient(to right, var(--color-primary), transparent) 1;
-  transition: transform var(--transition);
-}
+  .why-hscroll__sticky {
+    position: static;
+  }
 
-.why__item:first-child {
-  border-top: 1px solid var(--color-border);
-}
+  .why-hscroll__track {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 0 20px;
+    margin-top: var(--space-element);
+  }
 
-@media (min-width: 768px) {
-  .why__item {
-    gap: 60px;
-    padding: 48px 0;
+  .why-hscroll__card {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 32px;
   }
 }
 
-.why__item:hover .why__item-body {
-  transform: translateX(8px);
+/* Desktop: horizontal scroll */
+@media (min-width: 1024px) {
+  .why-hscroll {
+    height: 300vh;
+  }
+
+  .why-hscroll__sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .why-hscroll__track {
+    display: flex;
+    gap: 40px;
+    padding: 0 40px;
+    margin-top: var(--space-element);
+    will-change: transform;
+  }
+
+  .why-hscroll__card {
+    flex-shrink: 0;
+    width: 80vw;
+    max-width: 600px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 60px;
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+
+  .why-hscroll__card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
 }
 
-.why__item-number {
+.why-hscroll__num {
   font-family: var(--font-heading);
-  font-size: clamp(48px, 6vw, 80px);
+  font-size: clamp(48px, 8vw, 100px);
   font-weight: 700;
   color: var(--color-border);
   line-height: 1;
   letter-spacing: -0.04em;
-  flex-shrink: 0;
-  transition: color var(--transition);
+  margin-bottom: 24px;
 }
 
-.why__item:hover .why__item-number {
-  color: var(--color-primary-light);
-}
-
-.why__item-body {
-  transition: transform var(--transition);
-  padding-top: 8px;
-}
-
-@media (min-width: 768px) {
-  .why__item-body {
-    padding-top: 16px;
-  }
-}
-
-.why__item-title {
+.why-hscroll__title {
   font-family: var(--font-body);
-  font-size: 20px;
+  font-size: clamp(20px, 3vw, 28px);
   font-weight: 700;
   color: var(--color-text);
-  margin-bottom: 8px;
+  margin-bottom: 16px;
   line-height: 1.4;
 }
 
-.why__item-desc {
+.why-hscroll__desc {
   font-size: 15px;
   color: var(--color-text-sub);
   line-height: 2.0;
@@ -1031,7 +1097,7 @@ button {
 }
 
 /* ============================================
-   Contact CTA — Full-width, outline button, parallax
+   Contact CTA — Blue gradient + arch motif
    ============================================ */
 .contact-cta {
   position: relative;
@@ -1042,7 +1108,7 @@ button {
   background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #bfdbfe 100%);
 }
 
-/* アーチSVGモチーフを右側に配置 */
+/* Arch motif right side */
 .contact-cta::before {
   content: '';
   position: absolute;
@@ -1104,7 +1170,6 @@ button {
     height: 220px;
   }
 }
-
 
 .contact-cta__heading {
   font-family: var(--font-body);
@@ -1496,7 +1561,7 @@ button {
 }
 
 /* ============================================
-   Service Detail Sections
+   Service Detail Sections (services.html)
    ============================================ */
 .svc-detail {
   padding: var(--space-section) 0;
@@ -1749,7 +1814,7 @@ button {
   color: var(--color-primary);
 }
 
-/* Process Timeline (vertical) — enhanced visual */
+/* Process Timeline (vertical) */
 .process-section {
   background: var(--color-bg-alt);
   padding: var(--space-section) 0;
@@ -2503,4 +2568,194 @@ button {
    ============================================ */
 .magnetic-btn {
   transition: transform 0.3s var(--ease-out-expo);
+}
+
+/* ============================================
+   Legacy service classes (used on services.html)
+   ============================================ */
+.service {
+  padding: var(--space-section) 0;
+  background: var(--color-bg);
+}
+
+.service__list {
+  margin-top: var(--space-block);
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+}
+
+@media (min-width: 768px) {
+  .service__list {
+    gap: 140px;
+  }
+}
+
+.service__item {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .service__item {
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+  }
+
+  .service__item:nth-child(even) .service__image {
+    order: 2;
+  }
+
+  .service__item:nth-child(even) .service__body {
+    order: 1;
+  }
+}
+
+.service__image {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  aspect-ratio: 4 / 3;
+  clip-path: inset(5%);
+  transition: clip-path 0.6s var(--ease-out-expo);
+}
+
+.service__item:hover .service__image {
+  clip-path: inset(0%);
+}
+
+.service__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease-out-expo);
+}
+
+.service__item:hover .service__image img {
+  transform: scale(1.03);
+}
+
+/* Giant semi-transparent number overlay on image */
+.service__number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-heading);
+  font-size: clamp(120px, 18vw, 220px);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  mix-blend-mode: overlay;
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+
+.service__name {
+  font-family: var(--font-heading);
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.service__desc {
+  font-size: 15px;
+  color: var(--color-text-sub);
+  line-height: 2.0;
+  max-width: 440px;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 768px) {
+  .service__body {
+    position: relative;
+  }
+}
+
+/* ============================================
+   Legacy Why ARCUS (kept for potential sub-page use)
+   ============================================ */
+.why {
+  background: var(--color-bg-alt);
+  padding: var(--space-section) 0;
+}
+
+.why__list {
+  margin-top: var(--space-block);
+  display: flex;
+  flex-direction: column;
+}
+
+.why__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 36px 0;
+  border-bottom: 1px solid var(--color-accent);
+  border-bottom-width: 1px;
+  border-image: linear-gradient(to right, var(--color-primary), transparent) 1;
+  transition: transform var(--transition);
+}
+
+.why__item:first-child {
+  border-top: 1px solid var(--color-border);
+}
+
+@media (min-width: 768px) {
+  .why__item {
+    gap: 60px;
+    padding: 48px 0;
+  }
+}
+
+.why__item:hover .why__item-body {
+  transform: translateX(8px);
+}
+
+.why__item-number {
+  font-family: var(--font-heading);
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 700;
+  color: var(--color-border);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  flex-shrink: 0;
+  transition: color var(--transition);
+}
+
+.why__item:hover .why__item-number {
+  color: var(--color-primary-light);
+}
+
+.why__item-body {
+  transition: transform var(--transition);
+  padding-top: 8px;
+}
+
+@media (min-width: 768px) {
+  .why__item-body {
+    padding-top: 16px;
+  }
+}
+
+.why__item-title {
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.why__item-desc {
+  font-size: 15px;
+  color: var(--color-text-sub);
+  line-height: 2.0;
+  max-width: 500px;
 }
